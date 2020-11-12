@@ -26,12 +26,16 @@ public class IpManager extends JavaPlugin {
 		saveDefaultConfig();
 		getConfig().addDefault("log_console", "true");
 
+		loadIpConfig();
+		
+		getCommand("getip").setExecutor(new GetIpCommand());
+	}
+	
+	private void loadIpConfig() {
 		ipFile = new File(getDataFolder().getAbsolutePath() + File.separator + "users.yml");
 		if(!ipFile.exists())
 			Utils.copy(this, "users.yml", ipFile);
 		ipConfig = YamlConfiguration.loadConfiguration(ipFile);
-		
-		getCommand("getip").setExecutor(new GetIpCommand());
 	}
 	
 	public YamlConfiguration getIPConfig() {
@@ -44,5 +48,11 @@ public class IpManager extends JavaPlugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void reload() {
+		reloadConfig();
+		
+		loadIpConfig();
 	}
 }

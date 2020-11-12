@@ -3,6 +3,7 @@ package com.elikill58.ipmanager.handler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
@@ -29,6 +30,10 @@ public class IpPlayer extends IpPlayerAbstract {
 	
 	public Player getPlayer() {
 		return p;
+	}
+	
+	public boolean isIP(String checkIp) {
+		return ip.getStringIP().equalsIgnoreCase(checkIp);
 	}
 	
 	public IP getIP() {
@@ -92,6 +97,10 @@ public class IpPlayer extends IpPlayerAbstract {
 		list.add(connectionTime);
 		im.getIPConfig().set(uuid + ".connection", list);
 		im.saveIPConfig();
+	}
+	
+	public static List<IpPlayer> getPlayersOnIP(String ip){
+		return IP_PLAYERS.values().stream().filter((ipp) -> ipp.isIP(ip)).collect(Collectors.toList());
 	}
 	
 	public static IpPlayer getIpPlayer(Player p) {

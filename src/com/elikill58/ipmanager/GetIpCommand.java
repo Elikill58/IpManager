@@ -10,9 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.elikill58.ipmanager.handler.IP;
+import com.elikill58.ipmanager.handler.IP.IpInfos;
 import com.elikill58.ipmanager.handler.IpOfflinePlayer;
 import com.elikill58.ipmanager.handler.IpPlayer;
-import com.elikill58.ipmanager.handler.IP.IpInfos;
 
 @SuppressWarnings("deprecation")
 public class GetIpCommand implements CommandExecutor {
@@ -22,6 +22,11 @@ public class GetIpCommand implements CommandExecutor {
 		if (arg.length == 0) {
 			Messages.sendMessage(sender, "messages.precise");
 			return true;
+		}
+		if(arg[0].equalsIgnoreCase("reload")) {
+			Messages.sendMessage(sender, "messages.reloaded");
+			IpManager.getInstance().reload();
+			return false;
 		}
 		OfflinePlayer of = Bukkit.getOfflinePlayer(arg[0]);
 		if (of == null) {
