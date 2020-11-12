@@ -20,15 +20,49 @@ only_proxy:
 #
 ###########################################
 
+###########################################
+# Ban a specific IP
+# Now, you cannot ban IP list, but it comes soon.
+#
 banned-ip:
   enabled: false
   disallow:
   - "127.0.0.1"
+#
+###########################################
+
+###########################################
+# Notify alert when multiple player connect on the same IP
+#
+# The action have to be :
+# action_type:value
+#
+# Available actions :
+# console : Run command from console
+# run : The player wil run the command
+# send : Send to player with permission given in "permission" value (or OP if empty/not set).
+# kick : Kick the player with the given message
+#
+# In actions, this is all placeholders :
+# %name% : The name of player which just join
+# %uuid% : The uuid of player which just join
+# %count% : Amount of player on same IP
+# %all_names% : All names of player on the same IP (including just join player). Format: "Name1, Name2"
+#
+ip-notify:
+  2:
+    # this is used ONLY with "send" action. Other are runned even if the player don't have this permission
+    #permission: "ipmanager.notify"
+    actions:
+    - "run:say %count% accounts for %name% : %all_names%."
+#
+###########################################
 
 messages:
   log_console: "%name% (%uuid%) just connect with IP %ip%"
   wrong_proxy: "&cPlease connect via &eplay.myserver.net &c!"
   precise: "&cPrecise the player name or the player UUID"
+  reloaded: "&aPlugin IpManager reloaded !"
   cannot_found: "&cCannot found player !"
   not_registered: "&cIP of &e%name% &cnot registered"
   unknow: "Unknow"

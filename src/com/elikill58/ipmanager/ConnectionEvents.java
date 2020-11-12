@@ -1,5 +1,8 @@
 package com.elikill58.ipmanager;
 
+import java.util.List;
+import java.util.StringJoiner;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -8,19 +11,23 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.elikill58.ipmanager.handler.IpPlayer;
 import com.elikill58.ipmanager.listeners.WrongProxyEvent;
 
 public class ConnectionEvents implements Listener {
 
+	private final IpManager pl;
+	
+	public ConnectionEvents(IpManager pl) {
+		this.pl = pl;
+	}
 	
 	@EventHandler
 	public void onLogin(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
-		IpManager pl = IpManager.getInstance();
 		ConfigurationSection config = pl.getConfig();
 		if(config.getBoolean("log_console"))
 			pl.getLogger().info(Messages.getMessage("messages.log_console", "%name%", p.getName(), "%uuid%", p.getUniqueId().toString(), "%ip%", e.getAddress().getHostAddress()));
@@ -49,9 +56,25 @@ public class ConnectionEvents implements Listener {
 				e.setResult(Result.KICK_BANNED);
 			}
 		}
-		if(!e.getResult().equals(Result.ALLOWED))
-			return; // only if the player will stay online
-		
+	}
+	
+	private ConfigurationSection getConfigForAmountPlayer(ConfigurationSection config, int nb) {
+		if(config == null)
+			return null;
+		ConfigurationSection sec = null;
+		int tempI = -1;
+		for(String key : config.getKeys(false)) {
+			if(!Utils.isInteger(key) || !(config.get(key) instanceof ConfigurationSection))
+				continue;
+			int i = Integer.parseInt(key);
+			if(i == nb)
+				return config.getConfigurationSection(key);
+			else if(i < nb && i > tempI) {
+				sec = config.getConfigurationSection(key);
+				tempI = i;
+			}
+		}
+		return sec;
 	}
 	
 	@EventHandler
@@ -61,6 +84,32 @@ public class ConnectionEvents implements Listener {
 		ip.loadIP();
 		ip.setFaiIP(p.getAddress().getHostName());
 		ip.save();
+		List<IpPlayer> playersOnIp = IpPlayer.getPlayersOnIP(ip.getBasicIP());
+		ConfigurationSection playerSection = getConfigForAmountPlayer(pl.getConfig().getConfigurationSection("ip-notify"), playersOnIp.size());
+		if(playerSection == null)
+			return;
+		String perm = playerSection.getString("permission", "");
+		StringJoiner allNames = new StringJoiner(", ");
+		playersOnIp.forEach((pp) -> allNames.add(pp.getPlayer().getName()));
+		playerSection.getStringList("actions").forEach((action) -> {
+			if(!action.contains(":")) {
+				IpManager.getInstance().getLogger().warning("Wrong value for " + action + ", with path " + playerSection.getCurrentPath());
+				return;
+			}
+			String value = Utils.applyColorCodes(action.split(":", 2)[1].replaceAll("%name%", p.getName()).replaceAll("%uuid%", p.getUniqueId().toString())
+					.replaceAll("%count%", String.valueOf(playersOnIp.size())).replaceAll("%all_names%", allNames.toString()));
+			if(action.startsWith("console:")) {
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), value);
+			} else if(action.startsWith("run:")) {
+				p.performCommand(value);
+			} else if(action.startsWith("kick:")) {
+				p.kickPlayer(value);
+			} else if(action.startsWith("send:")) {
+				for(Player mod : Utils.getOnlinePlayers())
+					if((perm.isEmpty() && mod.isOp()) || mod.hasPermission(perm))
+						mod.sendMessage(value);
+			}
+		});
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)

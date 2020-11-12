@@ -33,7 +33,7 @@ public class IpPlayer extends IpPlayerAbstract {
 	}
 	
 	public boolean isIP(String checkIp) {
-		return ip.getStringIP().equalsIgnoreCase(checkIp);
+		return basicIP.equalsIgnoreCase(checkIp);
 	}
 	
 	public IP getIP() {

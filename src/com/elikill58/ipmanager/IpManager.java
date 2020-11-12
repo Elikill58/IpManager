@@ -3,8 +3,12 @@ package com.elikill58.ipmanager;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.elikill58.ipmanager.handler.IpPlayer;
 
 public class IpManager extends JavaPlugin {
 
@@ -22,13 +26,22 @@ public class IpManager extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		getServer().getPluginManager().registerEvents(new ConnectionEvents(), this);
+		getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
 		saveDefaultConfig();
 		getConfig().addDefault("log_console", "true");
 
 		loadIpConfig();
 		
 		getCommand("getip").setExecutor(new GetIpCommand());
+		
+		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+			for(Player p : Utils.getOnlinePlayers()) {
+				IpPlayer ip = IpPlayer.getIpPlayer(p);
+				ip.loadIP();
+				ip.setFaiIP(p.getAddress().getHostName());
+				ip.save();
+			}
+		});
 	}
 	
 	private void loadIpConfig() {
