@@ -50,11 +50,11 @@ banned-ip:
 # %all_names% : All names of player on the same IP (including just join player). Format: "Name1, Name2"
 #
 ip-notify:
-  2:
+  4:
     # this is used ONLY with "send" action. Other are runned even if the player don't have this permission
     #permission: "ipmanager.notify"
     actions:
-    - "run:say %count% accounts for %name% : %all_names%."
+    - "kick:Too many account on same IP (%count%/3).\nAccount on IP: %all_names%"
 #
 ###########################################
 
