@@ -2,6 +2,7 @@
 
 !/resources
 !/src
+!/*.yml
 
 !/.gitignore
 

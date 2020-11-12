@@ -1,0 +1,9 @@
+name: IPManager
+version: 1.2
+main: com.elikill58.ipmanager.IpManager
+author: Elikill58
+
+
+commands:
+  getip:
+    permission: ipmanager.getip

@@ -1,0 +1,68 @@
+# Log user IP on console when a player join
+log_console: true
+
+###########################################
+# Security system
+# Allow only connection from YOUR proxy (Bungee or Velocity)
+#
+# Why ? You can connect to spigot's server thanks to custom Bungee server, and be OP.
+#
+only_proxy:
+  enabled: false
+  kick: true
+  bungee_ip:
+  - 1.2.3.4
+  #
+  # If you want an autoban when wrong Proxy
+  # Keep it empty to don't run command
+  # Command dispatch from CONSOLE !
+  command_wrong_proxy: ""
+#
+###########################################
+
+banned-ip:
+  enabled: false
+  disallow:
+  - "127.0.0.1"
+
+messages:
+  log_console: "%name% (%uuid%) just connect with IP %ip%"
+  wrong_proxy: "&cPlease connect via &eplay.myserver.net &c!"
+  precise: "&cPrecise the player name or the player UUID"
+  cannot_found: "&cCannot found player !"
+  not_registered: "&cIP of &e%name% &cnot registered"
+  unknow: "Unknow"
+  yes: "Yes"
+  no: "No"
+  getip:
+    # What is the difference between 'ip', 'bungee_ip' and 'fai' ?
+    # ip: the real user ip
+    # proxy_ip: the IP of the proxy (same as 'ip' if without proxy). Used in "only_proxy" system
+    # fai: The FAI ip (can doesn't work, it depend of the location and the fai of the user)
+    #
+    online: # If the player is online
+    # All placeholders available :
+    # %city% : The city of the IP
+    # %region% : The region of the IP (like 'California')
+    # %region_code% : the region code of the IP (like 'CA')
+    # %country_code% : The IP's country code (like 'US')
+    # %country_name% : The IP's country name (like 'Washington')
+    # %continent_code% : The continent code (like 'NA')
+    # %in_eu% : If the IP is in EU
+    # %timezone% : Timezone of the country of the IP (like 'America/Los_Angeles')
+    # %languagues% : Lang of the country (like 'en-US,es-US,haw,fr')
+    # %asn% : The number of the organization which is owner of the IP
+    # %org% : Organization owner of the IP
+    - "&7&m-------&e GetIP of &c%name% &7&m-------"
+    - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a)"
+    - "&aProxyIP: &e%proxy_ip%"
+    - "&aFAI: &e%fai% &aOwned by &e%org%"
+    - "&7&m-------&e GetIP &7&m-------"
+    offline: # If the player is offline
+    - "&7&m-------&e GetIP &7&m-------"
+    - "&aIP of &c%name% &a(&e%uuid%&a)"
+    - "&aIP: &e%ip%"
+    - "&aProxyIP: &e%proxy_ip%"
+    - "&aFAI: &e%fai%"
+    - "&7&m-------&e GetIP &7&m-------"
+
