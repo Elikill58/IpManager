@@ -25,8 +25,6 @@ public class IpPlayer extends IpPlayerAbstract {
 		this.basicIP = im.getIPConfig().getString(uuid + ".ip");
 		this.bungeeIP = im.getIPConfig().getString(uuid + ".proxy");
 		this.faiIP = im.getIPConfig().getString(uuid + ".fai");
-		
-		IP_PLAYERS.put(p.getUniqueId(), this);
 	}
 	
 	public Player getPlayer() {
@@ -97,8 +95,6 @@ public class IpPlayer extends IpPlayerAbstract {
 	}
 	
 	public static IpPlayer getIpPlayer(Player p) {
-		if(IP_PLAYERS.containsKey(p.getUniqueId()))
-			return IP_PLAYERS.get(p.getUniqueId());
-		return new IpPlayer(p);
+		return IP_PLAYERS.computeIfAbsent(p.getUniqueId(), (uuid) -> new IpPlayer(p));
 	}
 }
