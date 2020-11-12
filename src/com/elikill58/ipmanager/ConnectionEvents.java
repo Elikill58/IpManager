@@ -105,9 +105,10 @@ public class ConnectionEvents implements Listener {
 			} else if(action.startsWith("kick:")) {
 				p.kickPlayer(value);
 			} else if(action.startsWith("send:")) {
-				for(Player mod : Utils.getOnlinePlayers())
+				Utils.getOnlinePlayers().forEach((mod) -> {
 					if((perm.isEmpty() && mod.isOp()) || mod.hasPermission(perm))
 						mod.sendMessage(value);
+				});
 			}
 		});
 	}

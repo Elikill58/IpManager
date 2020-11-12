@@ -31,7 +31,7 @@ import com.google.common.io.ByteStreams;
 
 public class Utils {
 
-	public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",")
+	private static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",")
 			.split(",")[3];
 	
 	public static String getServerURL() {
@@ -77,13 +77,6 @@ public class Utils {
 				.replaceAll("&f", ChatColor.WHITE.toString()).replaceAll("&l", ChatColor.BOLD.toString())
 				.replaceAll("&o", ChatColor.ITALIC.toString()).replaceAll("&m", ChatColor.STRIKETHROUGH.toString())
 				.replaceAll("&n", ChatColor.UNDERLINE.toString()).replaceAll("&k", ChatColor.MAGIC.toString());
-	}
-
-	public static String getString(String... s) {
-		String ret = "";
-		for (String r : s)
-			ret = ret + r;
-		return ret;
 	}
 
 	public static File copy(Plugin pl, String fileName, File f) {
