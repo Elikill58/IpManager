@@ -2,7 +2,7 @@ name: IPManager
 version: 1.2
 main: com.elikill58.ipmanager.IpManager
 author: Elikill58
-
+api-version: 1.13
 
 commands:
   getip:

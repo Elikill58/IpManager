@@ -89,14 +89,14 @@ messages:
     # %org% : Organization owner of the IP
     - "&7&m-------&e GetIP of &c%name% &7&m-------"
     - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a)"
-    - "&aProxyIP: &e%proxy_ip%"
-    - "&aFAI: &e%fai% &aOwned by &e%org%"
+    - "&aProxy: &e%proxy_ip%. &aFAI: &e%fai% &aOwned by &e%org%"
+    - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7, &aHosting: &e%hosting%&7."
     - "&7&m-------&e GetIP &7&m-------"
     offline: # If the player is offline
     - "&7&m-------&e GetIP &7&m-------"
     - "&aIP of &c%name% &a(&e%uuid%&a)"
     - "&aIP: &e%ip%"
-    - "&aProxyIP: &e%proxy_ip%"
-    - "&aFAI: &e%fai%"
+    - "&aProxy: &e%proxy_ip%. &aFAI: &e%fai%"
+    - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7, &aHosting: &e%hosting%&7."
     - "&7&m-------&e GetIP &7&m-------"
 
