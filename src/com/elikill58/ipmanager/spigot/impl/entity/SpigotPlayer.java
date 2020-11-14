@@ -13,7 +13,6 @@ import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.inventory.Inventory;
 import com.elikill58.ipmanager.api.inventory.PlayerInventory;
 import com.elikill58.ipmanager.api.location.Location;
-import com.elikill58.ipmanager.api.location.Vector;
 import com.elikill58.ipmanager.api.location.World;
 import com.elikill58.ipmanager.spigot.SpigotIpManager;
 import com.elikill58.ipmanager.spigot.impl.inventory.SpigotInventory;
@@ -61,11 +60,6 @@ public class SpigotPlayer extends Player {
 	}
 
 	@Override
-	public void damage(double amount) {
-		p.damage(amount);
-	}
-
-	@Override
 	public Location getLocation() {
 		return new SpigotLocation(p.getLocation());
 	}
@@ -102,21 +96,6 @@ public class SpigotPlayer extends Player {
 	}
 
 	@Override
-	public boolean getAllowFlight() {
-		return p.getAllowFlight();
-	}
-
-	@Override
-	public boolean isFlying() {
-		return p.isFlying();
-	}
-
-	@Override
-	public boolean isSneaking() {
-		return p.isSneaking();
-	}
-
-	@Override
 	public String getIP() {
 		return p.getAddress().getAddress().getHostAddress();
 	}
@@ -127,18 +106,8 @@ public class SpigotPlayer extends Player {
 	}
 
 	@Override
-	public void setSneaking(boolean b) {
-		p.setSneaking(b);
-	}
-
-	@Override
 	public EntityType getType() {
 		return EntityType.PLAYER;
-	}
-
-	@Override
-	public boolean isSprinting() {
-		return p.isSprinting();
 	}
 
 	@Override
@@ -152,19 +121,8 @@ public class SpigotPlayer extends Player {
 	}
 
 	@Override
-	public void setSprinting(boolean b) {
-		p.setSprinting(b);
-	}
-
-	@Override
 	public boolean isDead() {
 		return p.getHealth() <= 0;
-	}
-
-	@Override
-	public Vector getVelocity() {
-		org.bukkit.util.Vector vel = p.getVelocity();
-		return new Vector(vel.getX(), vel.getY(), vel.getZ());
 	}
 
 	@Override
@@ -199,24 +157,8 @@ public class SpigotPlayer extends Player {
 	}
 
 	@Override
-	public void setAllowFlight(boolean b) {
-		p.setAllowFlight(b);
-	}
-
-	@Override
-	public void setVelocity(Vector vel) {
-		p.setVelocity(new org.bukkit.util.Vector(vel.getX(), vel.getY(), vel.getZ()));
-	}
-
-	@Override
 	public Object getDefault() {
 		return p;
-	}
-	
-	@Override
-	public Vector getRotation() {
-		org.bukkit.util.Vector vec = p.getLocation().getDirection();
-		return new Vector(vec.getX(), vec.getY(), vec.getZ());
 	}
 	
 	@Override

@@ -9,7 +9,6 @@ import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.inventory.Inventory;
 import com.elikill58.ipmanager.api.inventory.PlayerInventory;
 import com.elikill58.ipmanager.api.location.Location;
-import com.elikill58.ipmanager.api.location.Vector;
 import com.elikill58.ipmanager.api.location.World;
 
 import net.kyori.text.TextComponent;
@@ -83,19 +82,6 @@ public class VelocityPlayer extends Player {
 	}
 
 	@Override
-	public boolean getAllowFlight() {
-		return false;
-	}
-
-	@Override
-	public boolean isFlying() {
-		return false;
-	}
-
-	@Override
-	public void setAllowFlight(boolean b) {}
-
-	@Override
 	public GameMode getGameMode() {
 		return null;
 	}
@@ -104,29 +90,10 @@ public class VelocityPlayer extends Player {
 	public void setGameMode(GameMode gameMode) {}
 
 	@Override
-	public void damage(double amount) {}
-
-	@Override
 	public void teleport(Location loc) {}
 
 	@Override
 	public void teleport(Entity et) {}
-
-	@Override
-	public boolean isSneaking() {
-		return false;
-	}
-
-	@Override
-	public void setSneaking(boolean b) {}
-
-	@Override
-	public boolean isSprinting() {
-		return false;
-	}
-
-	@Override
-	public void setSprinting(boolean b) {}
 
 	@Override
 	public World getWorld() {
@@ -156,17 +123,6 @@ public class VelocityPlayer extends Player {
 
 	@Override
 	public void updateInventory() {}
-
-	@Override
-	public Vector getVelocity() { return null; }
-
-	@Override
-	public void setVelocity(Vector vel) {}
-	
-	@Override
-	public Vector getRotation() {
-		return null;
-	}
 	
 	@Override
 	public void performCommand(String cmd) {

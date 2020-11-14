@@ -8,7 +8,6 @@ import com.elikill58.ipmanager.api.GameMode;
 import com.elikill58.ipmanager.api.inventory.Inventory;
 import com.elikill58.ipmanager.api.inventory.PlayerInventory;
 import com.elikill58.ipmanager.api.location.Location;
-import com.elikill58.ipmanager.api.location.Vector;
 import com.elikill58.ipmanager.api.location.World;
 
 public abstract class Player extends OfflinePlayer {
@@ -35,24 +34,6 @@ public abstract class Player extends OfflinePlayer {
 	 */
 	public abstract boolean hasPermission(String perm);
 	
-	/**
-	 * Check if the player is flying
-	 * 
-	 * @return true is the player fly
-	 */
-	public abstract boolean isFlying();
-	/**
-	 * Check if the player is authorized to fly
-	 * 
-	 * @return true if the player can fly
-	 */
-	public abstract boolean getAllowFlight();
-	/**
-	 * Edit the authorization to fly
-	 * 
-	 * @param b true if the player is allowed to fly
-	 */
-	public abstract void setAllowFlight(boolean b);
 
 	/**
 	 * Get current player latency
@@ -77,12 +58,6 @@ public abstract class Player extends OfflinePlayer {
 	public abstract void setGameMode(GameMode gameMode);
 
 	/**
-	 * Damage player according to damage amount
-	 * 
-	 * @param amount the quantity of damage
-	 */
-	public abstract void damage(double amount);
-	/**
 	 * Kick player with the specified reason
 	 * 
 	 * @param reason the reason of kick
@@ -101,12 +76,6 @@ public abstract class Player extends OfflinePlayer {
 	 */
 	public abstract void teleport(Entity et);
 
-	public abstract boolean isSneaking();
-	public abstract void setSneaking(boolean b);
-	
-	public abstract boolean isSprinting();
-	public abstract void setSprinting(boolean b);
-
 	/**
 	 * Get player world
 	 * 
@@ -120,19 +89,6 @@ public abstract class Player extends OfflinePlayer {
 	public abstract void openInventory(Inventory inv);
 	public abstract void closeInventory();
 	public abstract void updateInventory();
-	
-	/**
-	 * Get current player velocity
-	 * 
-	 * @return the player velocity
-	 */
-	public abstract Vector getVelocity();
-	/**
-	 * Edit the player velocity
-	 * 
-	 * @param vel the new velocity
-	 */
-	public abstract void setVelocity(Vector vel);
 	
 	public abstract InetSocketAddress getAddress();
 	

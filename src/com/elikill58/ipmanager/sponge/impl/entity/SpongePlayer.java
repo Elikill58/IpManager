@@ -3,13 +3,7 @@ package com.elikill58.ipmanager.sponge.impl.entity;
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.manipulator.mutable.entity.FlyingData;
-import org.spongepowered.api.data.manipulator.mutable.entity.SneakingData;
-import org.spongepowered.api.data.manipulator.mutable.entity.SprintData;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
-import org.spongepowered.api.event.cause.entity.damage.DamageTypes;
-import org.spongepowered.api.event.cause.entity.damage.source.DamageSource;
 import org.spongepowered.api.item.inventory.InventoryArchetypes;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
@@ -21,14 +15,12 @@ import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.inventory.Inventory;
 import com.elikill58.ipmanager.api.inventory.PlayerInventory;
 import com.elikill58.ipmanager.api.location.Location;
-import com.elikill58.ipmanager.api.location.Vector;
 import com.elikill58.ipmanager.api.location.World;
 import com.elikill58.ipmanager.sponge.SpongeIpManager;
 import com.elikill58.ipmanager.sponge.impl.inventory.SpongeInventory;
 import com.elikill58.ipmanager.sponge.impl.inventory.SpongePlayerInventory;
 import com.elikill58.ipmanager.sponge.impl.location.SpongeLocation;
 import com.elikill58.ipmanager.sponge.impl.location.SpongeWorld;
-import com.flowpowered.math.vector.Vector3d;
 
 public class SpongePlayer extends Player {
 
@@ -85,11 +77,6 @@ public class SpongePlayer extends Player {
 	}
 
 	@Override
-	public void damage(double amount) {
-		p.damage(amount, DamageSource.builder().type(DamageTypes.CUSTOM).build());
-	}
-
-	@Override
 	public Location getLocation() {
 		return new SpongeLocation(p.getLocation());
 	}
@@ -120,21 +107,6 @@ public class SpongePlayer extends Player {
 	}
 
 	@Override
-	public boolean getAllowFlight() {
-		return p.get(Keys.CAN_FLY).orElse(false);
-	}
-
-	@Override
-	public boolean isFlying() {
-		return p.getOrCreate(FlyingData.class).get().flying().get();
-	}
-
-	@Override
-	public boolean isSneaking() {
-		return p.getOrCreate(SneakingData.class).get().sneaking().get();
-	}
-
-	@Override
 	public String getIP() {
 		return p.getConnection().getAddress().getAddress().getHostAddress();
 	}
@@ -145,18 +117,8 @@ public class SpongePlayer extends Player {
 	}
 
 	@Override
-	public void setSneaking(boolean b) {
-		p.getOrCreate(SneakingData.class).get().sneaking().set(b);
-	}
-
-	@Override
 	public EntityType getType() {
 		return EntityType.PLAYER;
-	}
-
-	@Override
-	public boolean isSprinting() {
-		return p.getOrCreate(SprintData.class).get().sprinting().get();
 	}
 
 	@Override
@@ -171,19 +133,8 @@ public class SpongePlayer extends Player {
 	}
 
 	@Override
-	public void setSprinting(boolean b) {
-		p.getOrCreate(SprintData.class).get().sprinting().set(b);
-	}
-
-	@Override
 	public boolean isDead() {
 		return p.getHealthData().health().get() <= 0;
-	}
-
-	@Override
-	public Vector getVelocity() {
-		Vector3d vel = p.getVelocity();
-		return new Vector(vel.getX(), vel.getY(), vel.getZ());
 	}
 
 	@Override
@@ -217,24 +168,8 @@ public class SpongePlayer extends Player {
 	}
 
 	@Override
-	public void setAllowFlight(boolean b) {
-		p.offer(Keys.CAN_FLY, b);
-	}
-
-	@Override
-	public void setVelocity(Vector vel) {
-		p.setVelocity(new Vector3d(vel.getX(), vel.getY(), vel.getZ()));
-	}
-
-	@Override
 	public Object getDefault() {
 		return p;
-	}
-	
-	@Override
-	public Vector getRotation() {
-		Vector3d vec = p.getRotation();
-		return new Vector(vec.getX(), vec.getY(), vec.getZ());
 	}
 	
 	@Override

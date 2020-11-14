@@ -3,7 +3,6 @@ package com.elikill58.ipmanager.api.entity;
 import java.util.UUID;
 
 import com.elikill58.ipmanager.api.location.Location;
-import com.elikill58.ipmanager.api.location.Vector;
 
 public abstract class OfflinePlayer extends Entity {
 
@@ -26,11 +25,6 @@ public abstract class OfflinePlayer extends Entity {
 	@Override
 	public EntityType getType() {
 		return EntityType.PLAYER;
-	}
-
-	@Override
-	public Vector getRotation() {
-		return null;
 	}
 
 	@Override

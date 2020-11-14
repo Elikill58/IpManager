@@ -3,7 +3,6 @@ package com.elikill58.ipmanager.spigot.impl.entity;
 import com.elikill58.ipmanager.api.entity.Entity;
 import com.elikill58.ipmanager.api.entity.EntityType;
 import com.elikill58.ipmanager.api.location.Location;
-import com.elikill58.ipmanager.api.location.Vector;
 import com.elikill58.ipmanager.spigot.impl.location.SpigotLocation;
 
 public class SpigotEntity extends Entity {
@@ -49,11 +48,5 @@ public class SpigotEntity extends Entity {
 	@Override
 	public String getName() {
 		return entity.getName();
-	}
-	
-	@Override
-	public Vector getRotation() {
-		org.bukkit.util.Vector vec = entity.getLocation().getDirection();
-		return new Vector(vec.getX(), vec.getY(), vec.getZ());
 	}
 }
