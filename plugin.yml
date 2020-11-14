@@ -1,6 +1,6 @@
-name: IPManager
-version: 1.2
-main: com.elikill58.ipmanager.IpManager
+name: IpManager
+version: 2.0
+main: com.elikill58.ipmanager.spigot.SpigotIpManager
 author: Elikill58
 api-version: 1.13
 

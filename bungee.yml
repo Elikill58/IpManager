@@ -1,0 +1,4 @@
+name: IpManager
+author: Elikill58
+version: 2.0
+main: com.elikill58.ipmanager.bungee.BungeeIpManager
