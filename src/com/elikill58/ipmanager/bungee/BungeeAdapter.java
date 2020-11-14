@@ -1,6 +1,7 @@
 package com.elikill58.ipmanager.bungee;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.elikill58.ipmanager.api.location.Location;
 import com.elikill58.ipmanager.api.location.World;
 import com.elikill58.ipmanager.api.plugin.ExternalPlugin;
 import com.elikill58.ipmanager.api.yaml.config.Configuration;
+import com.elikill58.ipmanager.api.yaml.config.YamlConfiguration;
 import com.elikill58.ipmanager.bungee.impl.entity.BungeePlayer;
 import com.elikill58.ipmanager.bungee.impl.plugin.BungeeExternalPlugin;
 import com.elikill58.ipmanager.universal.Adapter;
@@ -36,13 +38,17 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 public class BungeeAdapter extends Adapter {
 
-	private final Configuration config;
+	private Configuration config;
 	private final Plugin pl;
 	private final LoggerAdapter logger;
 
 	public BungeeAdapter(Plugin pl) {
 		this.pl = pl;
-		this.config = UniversalUtils.loadConfig(new File(pl.getDataFolder(), "config.yml"), "config.yml");
+		try {
+			this.config = YamlConfiguration.load(copyBundledFile("config.yml", new File(pl.getDataFolder(), "config.yml").toPath()).toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.logger = new JavaLoggerAdapter(pl.getLogger());
 	}
 	

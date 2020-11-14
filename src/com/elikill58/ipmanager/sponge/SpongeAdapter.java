@@ -29,6 +29,7 @@ import com.elikill58.ipmanager.api.location.Location;
 import com.elikill58.ipmanager.api.location.World;
 import com.elikill58.ipmanager.api.plugin.ExternalPlugin;
 import com.elikill58.ipmanager.api.yaml.config.Configuration;
+import com.elikill58.ipmanager.api.yaml.config.YamlConfiguration;
 import com.elikill58.ipmanager.sponge.impl.entity.SpongeEntityManager;
 import com.elikill58.ipmanager.sponge.impl.entity.SpongeOfflinePlayer;
 import com.elikill58.ipmanager.sponge.impl.inventory.SpongeInventory;
@@ -52,7 +53,11 @@ public class SpongeAdapter extends Adapter {
 	public SpongeAdapter(SpongeIpManager sn) {
 		this.plugin = sn;
 		this.logger = new Slf4jLoggerAdapter(sn.getLogger());
-		this.config = UniversalUtils.loadConfig(new File(getDataFolder(), "config.yml"), "config.yml");
+		try {
+			this.config = YamlConfiguration.load(copyBundledFile("config.yml", new File(getDataFolder(), "config.yml").toPath()).toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.itemRegistrar = new SpongeItemRegistrar();
 	}
 	
@@ -101,7 +106,11 @@ public class SpongeAdapter extends Adapter {
 
 	@Override
 	public void reloadConfig() {
-		this.config = UniversalUtils.loadConfig(new File(getDataFolder(), "config.yml"), "config.yml");
+		try {
+			this.config = YamlConfiguration.load(copyBundledFile("config.yml", new File(getDataFolder(), "config.yml").toPath()).toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.elikill58.ipmanager.velocity;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.elikill58.ipmanager.api.location.Location;
 import com.elikill58.ipmanager.api.location.World;
 import com.elikill58.ipmanager.api.plugin.ExternalPlugin;
 import com.elikill58.ipmanager.api.yaml.config.Configuration;
+import com.elikill58.ipmanager.api.yaml.config.YamlConfiguration;
 import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.Platform;
 import com.elikill58.ipmanager.universal.logger.LoggerAdapter;
@@ -37,7 +39,11 @@ public class VelocityAdapter extends Adapter {
 
 	public VelocityAdapter(VelocityIpManager pl) {
 		this.pl = pl;
-		this.config = UniversalUtils.loadConfig(new File(pl.getDataFolder(), "config.yml"), "config.yml");
+		try {
+			this.config = YamlConfiguration.load(copyBundledFile("config.yml", new File(pl.getDataFolder(), "config.yml").toPath()).toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.logger = new Slf4jLoggerAdapter(pl.getLogger());
 	}
 	

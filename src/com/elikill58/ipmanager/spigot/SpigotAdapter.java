@@ -1,6 +1,7 @@
 package com.elikill58.ipmanager.spigot;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import com.elikill58.ipmanager.api.location.Location;
 import com.elikill58.ipmanager.api.location.World;
 import com.elikill58.ipmanager.api.plugin.ExternalPlugin;
 import com.elikill58.ipmanager.api.yaml.config.Configuration;
+import com.elikill58.ipmanager.api.yaml.config.YamlConfiguration;
 import com.elikill58.ipmanager.spigot.impl.entity.SpigotOfflinePlayer;
 import com.elikill58.ipmanager.spigot.impl.entity.SpigotPlayer;
 import com.elikill58.ipmanager.spigot.impl.inventory.SpigotInventory;
@@ -47,7 +49,7 @@ public class SpigotAdapter extends Adapter {
 
 	public SpigotAdapter(JavaPlugin pl) {
 		this.pl = pl;
-		this.config = UniversalUtils.loadConfig(new File(pl.getDataFolder(), "config.yml"), "config.yml");
+		reloadConfig();
 		this.logger = new JavaLoggerAdapter(pl.getLogger());
 		this.itemRegistrar = new SpigotItemRegistrar();
 	}
@@ -96,7 +98,11 @@ public class SpigotAdapter extends Adapter {
 
 	@Override
 	public void reloadConfig() {
-		this.config = UniversalUtils.loadConfig(new File(pl.getDataFolder(), "config.yml"), "config.yml");
+		try {
+			this.config = YamlConfiguration.load(copyBundledFile("config.yml", new File(pl.getDataFolder(), "config.yml").toPath()).toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

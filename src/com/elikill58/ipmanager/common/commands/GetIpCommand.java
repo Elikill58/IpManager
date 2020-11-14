@@ -9,6 +9,7 @@ import com.elikill58.ipmanager.api.commands.CommandSender;
 import com.elikill58.ipmanager.api.commands.TabListeners;
 import com.elikill58.ipmanager.api.entity.OfflinePlayer;
 import com.elikill58.ipmanager.api.entity.Player;
+import com.elikill58.ipmanager.spigot.SpigotIpManager;
 import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.IP;
 import com.elikill58.ipmanager.universal.IpManager;
@@ -40,7 +41,8 @@ public class GetIpCommand implements CommandListeners, TabListeners {
 			sender.sendMessage(Messages.getMessage("messages.cannot_found"));
 			return false;
 		}
-		if (IpManager.getIPConfig().contains(of.getUniqueId().toString() + ".name")) {
+		// TODO fix
+		if (SpigotIpManager.getInstance().getConfig().contains(of.getUniqueId().toString() + ".name")) {
 			if (of.isOnline()) {
 				IpPlayer pp = IpPlayer.getIpPlayer((Player) of);
 				IP ip = pp.getIP();

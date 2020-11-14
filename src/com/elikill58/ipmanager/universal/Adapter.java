@@ -3,6 +3,8 @@ package com.elikill58.ipmanager.universal;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
@@ -84,6 +86,31 @@ public abstract class Adapter {
 	 */
 	@Nullable
 	public abstract InputStream openBundledFile(String name) throws IOException;
+
+	/**
+	 * Copies a {@link #openBundledFile} bundled file} to the file denoted by the given Path
+	 *
+	 * @param name the name of the bundled file
+	 * @param destFile the file Path it will be copied to
+	 *
+	 * @return the file Path it is copied to, or null if the bundled file does not exist
+	 *
+	 * @throws IOException if an IO exception occurred
+	 */
+	@Nullable
+	public Path copyBundledFile(String name, Path destFile) throws IOException {
+		if (Files.notExists(destFile)) {
+			Files.createDirectories(destFile.getParent());
+			try (InputStream bundled = openBundledFile(name)) {
+				if (bundled == null) {
+					return null;
+				}
+				Files.copy(bundled, destFile);
+			}
+		}
+
+		return destFile;
+	}
 
 	/**
 	 * Get a logger adapter to log informations.

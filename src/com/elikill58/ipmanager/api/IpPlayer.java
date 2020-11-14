@@ -8,10 +8,8 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import com.elikill58.ipmanager.api.entity.Player;
-import com.elikill58.ipmanager.api.yaml.config.Configuration;
 import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.IP;
-import com.elikill58.ipmanager.universal.IpManager;
 
 public class IpPlayer {
 
@@ -31,10 +29,10 @@ public class IpPlayer {
 		this.uuid = uuid;
 		this.p = p;
 		this.connectionTime = System.currentTimeMillis();
-		Configuration conf = IpManager.getIPConfig();
+		/*Configuration conf = IpManager.getIPConfig();
 		this.basicIP = conf.getString(uuid.toString() + ".ip");
 		this.bungeeIP = conf.getString(uuid.toString() + ".proxy");
-		this.faiIP = conf.getString(uuid.toString() + ".fai");
+		this.faiIP = conf.getString(uuid.toString() + ".fai");*/
 	}
 	
 	public Player getPlayer() {
@@ -97,7 +95,7 @@ public class IpPlayer {
 	}
 	
 	public void save() {
-		Configuration conf = IpManager.getIPConfig();
+		/*Configuration conf = IpManager.getIPConfig();
 		String uuid = p.getUniqueId().toString();
 		conf.set(uuid + ".name", p.getName());
 		conf.set(uuid + ".ip", basicIP);
@@ -106,7 +104,7 @@ public class IpPlayer {
 		List<Long> list = conf.getLongList(uuid + ".connection");
 		list.add(connectionTime);
 		conf.set(uuid + ".connection", list);
-		IpManager.saveIPConfig();
+		IpManager.saveIPConfig();*/
 	}
 	
 	public static List<IpPlayer> getPlayersOnIP(String ip){
