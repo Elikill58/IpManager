@@ -3,6 +3,8 @@
 !/resources
 !/src
 !/*.yml
+!/mcmod.info
+!/*.json
 
 !/.gitignore
 

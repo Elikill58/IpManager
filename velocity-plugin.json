@@ -1,0 +1,1 @@
+{"id":"ipmanager","name":"IpManager","version":"2.0","description":"Manage player IP - Remove security problem with proxy","authors":["Elikill58"],"dependencies":[],"main":"com.elikill58.ipmanager.velocity.VelocityIpManager"}

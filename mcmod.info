@@ -1,0 +1,9 @@
+[{
+    "modid": "ipmanager",
+    "name": "IpManager",
+    "version": "2.0",
+    "description": "Manage player IP - Remove security problem with proxy",
+    "authorList": [
+        "Elikill58"
+    ]
+}]
