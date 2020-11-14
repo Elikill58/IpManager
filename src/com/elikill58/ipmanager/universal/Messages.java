@@ -5,16 +5,15 @@ import java.util.List;
 
 import com.elikill58.ipmanager.api.commands.CommandSender;
 import com.elikill58.ipmanager.api.utils.Utils;
-import com.elikill58.ipmanager.spigot.SpigotIpManager;
 
 public class Messages {
 	
 	private static String get(String msg) {
-		return SpigotIpManager.getInstance().getConfig().getString(msg);
+		return Adapter.getAdapter().getConfig().getString(msg);
 	}
 	
 	public static List<String> getStringList(String key, String... placeholders){
-		List<String> last = SpigotIpManager.getInstance().getConfig().getStringList(key);
+		List<String> last = Adapter.getAdapter().getConfig().getStringList(key);
 		if(last.size() == 0)
 			return new ArrayList<>();
 		List<String> l = new ArrayList<>();

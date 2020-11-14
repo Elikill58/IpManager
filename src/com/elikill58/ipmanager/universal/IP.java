@@ -2,11 +2,9 @@ package com.elikill58.ipmanager.universal;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.elikill58.ipmanager.spigot.SpigotIpManager;
 import com.elikill58.ipmanager.universal.exception.NotLoadedException;
 import com.elikill58.ipmanager.universal.utils.UniversalUtils;
 
@@ -22,9 +20,10 @@ public class IP {
 	public IP(String ip) {
 		this.ip = ip;
 
-		Bukkit.getScheduler().runTaskAsynchronously(SpigotIpManager.getInstance(), () -> {
+		new Thread(() -> {
 			try {
-				String checkingVpn = UniversalUtils.getContentFromURL(UniversalUtils.getServerURL() + "ipmanager.php?ip=" + ip).orElse("{}");
+				String checkingVpn = UniversalUtils
+						.getContentFromURL(UniversalUtils.getServerURL() + "ipmanager.php?ip=" + ip).orElse("{}");
 				Object data = new JSONParser().parse(checkingVpn);
 				if (data instanceof JSONObject) {
 					JSONObject json = (JSONObject) data;
@@ -35,17 +34,17 @@ public class IP {
 						isProxy = result.get("proxy") == "true";
 						isHosting = result.get("hosting") == "true";
 					} else {
-						SpigotIpManager.getInstance().getLogger()
-								.severe("Error while loading VPN data for " + ip + ": " + status.toString());
+						Adapter.getAdapter().getLogger()
+								.error("Error while loading VPN data for " + ip + ": " + status.toString());
 					}
 				} else
 					throw new NoSuchFieldException("Cannot found JSON vpn data for '" + allIpJsonInfos + "' string.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		});
-		Bukkit.getScheduler().runTaskAsynchronously(SpigotIpManager.getInstance(),
-				() -> allIpJsonInfos = UniversalUtils.getContentFromURL("https://ipapi.co/" + ip + "/json/").orElse("{}"));
+		}).start();
+		new Thread(() -> allIpJsonInfos = UniversalUtils.getContentFromURL("https://ipapi.co/" + ip + "/json/")
+				.orElse("{}")).start();
 		try {
 			Object data = new JSONParser().parse(allIpJsonInfos);
 			if (data instanceof JSONObject) {

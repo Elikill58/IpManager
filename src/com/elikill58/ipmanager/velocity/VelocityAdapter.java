@@ -86,7 +86,7 @@ public class VelocityAdapter extends Adapter {
 	
 	@Override
 	public String getPluginVersion() {
-		return UniversalUtils.NEGATIVITY_VERSION;
+		return UniversalUtils.IP_MANAGER_VERSION;
 	}
 
 	@Override

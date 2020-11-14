@@ -17,7 +17,7 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 
-@Plugin(id = "negativity", name = "Negativity", version = UniversalUtils.NEGATIVITY_VERSION,
+@Plugin(id = "negativity", name = "Negativity", version = UniversalUtils.IP_MANAGER_VERSION,
         description = "It's an Advanced AntiCheat Detection", authors = {"Elikill58", "RedNesto"})
 public class VelocityIpManager {
 	
