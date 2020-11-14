@@ -4,14 +4,14 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.commands.CommandSender;
 import com.elikill58.ipmanager.api.entity.Entity;
 
 public class SpongeEntityManager {
 
 	public static com.elikill58.ipmanager.api.entity.Player getPlayer(Player p){
-		return IpPlayer.getPlayer(p.getUniqueId(), () -> new SpongePlayer(p)).getPlayer();
+		return Players.getPlayer(p.getUniqueId(), () -> new SpongePlayer(p));
 	}
 	
 	public static Entity getEntity(org.spongepowered.api.entity.Entity e) {

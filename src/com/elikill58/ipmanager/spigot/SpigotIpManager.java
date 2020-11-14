@@ -5,7 +5,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.elikill58.ipmanager.api.IpPlayer;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.spigot.listeners.BlockListeners;
 import com.elikill58.ipmanager.spigot.listeners.CommandsListeners;
@@ -17,6 +16,8 @@ import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.Database;
 import com.elikill58.ipmanager.universal.IpManager;
 import com.elikill58.ipmanager.universal.Version;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccountManager;
 import com.elikill58.ipmanager.universal.dataStorage.IpManagerAccountStorage;
 
 public class SpigotIpManager extends JavaPlugin {
@@ -58,9 +59,9 @@ public class SpigotIpManager extends JavaPlugin {
 		
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
 			for(Player p : Adapter.getAdapter().getOnlinePlayers()) {
-				IpPlayer ip = IpPlayer.getPlayer(p);
+				IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(p.getUniqueId());
 				ip.loadIP();
-				ip.setFaiIP(p.getAddress().getHostName());
+				ip.setFai(p.getAddress().getHostName());
 				ip.save();
 			}
 		});

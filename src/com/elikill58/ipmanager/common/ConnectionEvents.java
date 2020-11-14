@@ -3,7 +3,7 @@ package com.elikill58.ipmanager.common;
 import java.util.List;
 import java.util.StringJoiner;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.events.EventListener;
 import com.elikill58.ipmanager.api.events.EventManager;
@@ -16,6 +16,8 @@ import com.elikill58.ipmanager.api.utils.Utils;
 import com.elikill58.ipmanager.api.yaml.config.Configuration;
 import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.Messages;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccountManager;
 import com.elikill58.ipmanager.universal.utils.UniversalUtils;
 
 public class ConnectionEvents implements Listeners {
@@ -27,9 +29,10 @@ public class ConnectionEvents implements Listeners {
 		String bungeeIP = e.getRealAddress().getHostAddress(), basicIp = e.getAddress().getHostAddress();
 		if(config.getBoolean("log_console"))
 			pl.getLogger().info(Messages.getMessage("messages.log_console", "%name%", e.getName(), "%uuid%", e.getUUID().toString(), "%ip%", basicIp));
-		IpPlayer ip = e.getIpPlayer();
-		ip.setBasicIP(basicIp);
-		ip.setBungeeIP(bungeeIP);
+		IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(e.getUUID());
+		ip.setBasicIp(basicIp);
+		ip.setProxy(bungeeIP);
+		ip.save();
 		
 		if(config.getBoolean("only_proxy.enabled")) {
 			if(!config.getStringList("only_proxy.bungee_ip").contains(bungeeIP)) {
@@ -75,17 +78,18 @@ public class ConnectionEvents implements Listeners {
 	@EventListener
 	public void onJoin(PlayerConnectEvent e) {
 		Player p = e.getPlayer();
-		IpPlayer ip = IpPlayer.getIpPlayer(p);
+		IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(p.getUniqueId());
 		ip.loadIP();
-		ip.setFaiIP(p.getAddress().getHostName());
+		ip.setFai(p.getAddress().getHostName());
 		ip.save();
-		List<IpPlayer> playersOnIp = IpPlayer.getPlayersOnIP(ip.getBasicIP());
-		Configuration playerSection = getConfigForAmountPlayer(Adapter.getAdapter().getConfig().getSection("ip-notify"), playersOnIp.size());
+		Adapter ada = Adapter.getAdapter();
+		List<Player> playersOnIp = Players.getPlayersOnIP(ip.getBasicIp());
+		Configuration playerSection = getConfigForAmountPlayer(ada.getConfig().getSection("ip-notify"), playersOnIp.size());
 		if(playerSection == null)
 			return;
 		String perm = playerSection.getString("permission", "");
 		StringJoiner allNames = new StringJoiner(", ");
-		playersOnIp.forEach((pp) -> allNames.add(pp.getPlayer().getName()));
+		playersOnIp.forEach((pp) -> allNames.add(pp.getName()));
 		playerSection.getStringList("actions").forEach((action) -> {
 			if(!action.contains(":")) {
 				Adapter.getAdapter().getLogger().warn("Wrong value for " + action + ".");
@@ -94,13 +98,13 @@ public class ConnectionEvents implements Listeners {
 			String value = Utils.coloredMessage(action.split(":", 2)[1].replaceAll("%name%", p.getName()).replaceAll("%uuid%", p.getUniqueId().toString())
 					.replaceAll("%count%", String.valueOf(playersOnIp.size())).replaceAll("%all_names%", allNames.toString()));
 			if(action.startsWith("console:")) {
-				Adapter.getAdapter().runConsoleCommand(value);
+				ada.runConsoleCommand(value);
 			} else if(action.startsWith("run:")) {
 				p.performCommand(value);
 			} else if(action.startsWith("kick:")) {
 				p.kick(value);
 			} else if(action.startsWith("send:")) {
-				Adapter.getAdapter().getOnlinePlayers().forEach((mod) -> {
+				ada.getOnlinePlayers().forEach((mod) -> {
 					if((perm.isEmpty() && mod.isOp()) || mod.hasPermission(perm))
 						mod.sendMessage(value);
 				});

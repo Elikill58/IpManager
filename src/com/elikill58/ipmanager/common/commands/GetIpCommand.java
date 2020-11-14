@@ -3,18 +3,17 @@ package com.elikill58.ipmanager.common.commands;
 import java.util.List;
 import java.util.UUID;
 
-import com.elikill58.ipmanager.api.IpPlayer;
 import com.elikill58.ipmanager.api.commands.CommandListeners;
 import com.elikill58.ipmanager.api.commands.CommandSender;
 import com.elikill58.ipmanager.api.commands.TabListeners;
 import com.elikill58.ipmanager.api.entity.OfflinePlayer;
-import com.elikill58.ipmanager.api.entity.Player;
-import com.elikill58.ipmanager.spigot.SpigotIpManager;
 import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.IP;
+import com.elikill58.ipmanager.universal.IP.IpInfos;
 import com.elikill58.ipmanager.universal.IpManager;
 import com.elikill58.ipmanager.universal.Messages;
-import com.elikill58.ipmanager.universal.IP.IpInfos;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccountManager;
 
 public class GetIpCommand implements CommandListeners, TabListeners {
 
@@ -41,14 +40,13 @@ public class GetIpCommand implements CommandListeners, TabListeners {
 			sender.sendMessage(Messages.getMessage("messages.cannot_found"));
 			return false;
 		}
-		// TODO fix
-		if (SpigotIpManager.getInstance().getConfig().contains(of.getUniqueId().toString() + ".name")) {
+		try {
+			IpPlayerAccount pp = IpPlayerAccountManager.getManager().getNow(of.getUniqueId());
 			if (of.isOnline()) {
-				IpPlayer pp = IpPlayer.getIpPlayer((Player) of);
 				IP ip = pp.getIP();
 				for (String s : Messages.getStringList("messages.getip.online", "%name%", of.getName(), "%uuid%",
-						of.getUniqueId().toString(), "%ip%", get(pp.getBasicIP()), "%proxy_ip%", get(pp.getBungeeIP()),
-						"%fai%", get(pp.getFaiIP()), "%vpn%", Messages.getMessage(ip.isVPN()), "%proxy%",
+						of.getUniqueId().toString(), "%ip%", get(pp.getBasicIp()), "%proxy_ip%", get(pp.getProxy()),
+						"%fai%", get(pp.getFai()), "%vpn%", Messages.getMessage(ip.isVPN()), "%proxy%",
 						Messages.getMessage(ip.isProxy()), "%hosting%", Messages.getMessage(ip.isHosting()))) {
 					if (s == null)
 						continue;
@@ -57,15 +55,15 @@ public class GetIpCommand implements CommandListeners, TabListeners {
 					sender.sendMessage(s);
 				}
 			} else {
-				IpPlayer pp = IpPlayer.getPlayer(of.getUniqueId(), () -> null);
 				Messages.getStringList("messages.getip.offline", "%name%", of.getName(), "%uuid%",
-						of.getUniqueId().toString(), "%ip%", get(pp.getBasicIP()), "%proxy_ip%", get(pp.getBungeeIP()),
-						"%fai%", get(pp.getFaiIP())).forEach(sender::sendMessage);
+						of.getUniqueId().toString(), "%ip%", get(pp.getBasicIp()), "%proxy_ip%", get(pp.getProxy()),
+						"%fai%", get(pp.getFai())).forEach(sender::sendMessage);
 			}
-		} else
+		} catch (Exception e) {
 			sender.sendMessage(Messages.getMessage("messages.not_registered", "%name%", of.getName(), "%uuid%",
 					of.getUniqueId().toString()));
-
+			Adapter.getAdapter().getLogger().info("Error while doing getip: " + e.getMessage() + " (" + e.getStackTrace()[0].toString() + ")");
+		}
 		return false;
 	}
 	

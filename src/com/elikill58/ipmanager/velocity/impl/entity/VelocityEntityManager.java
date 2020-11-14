@@ -1,6 +1,6 @@
 package com.elikill58.ipmanager.velocity.impl.entity;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.commands.CommandSender;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.velocitypowered.api.command.CommandSource;
@@ -8,7 +8,7 @@ import com.velocitypowered.api.command.CommandSource;
 public class VelocityEntityManager {
 
 	public static Player getPlayer(com.velocitypowered.api.proxy.Player p){
-		return IpPlayer.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p)).getPlayer();
+		return Players.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p));
 	}
 
 	public static CommandSender getExecutor(CommandSource sender) {

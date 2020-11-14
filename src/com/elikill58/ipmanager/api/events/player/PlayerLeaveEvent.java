@@ -1,16 +1,16 @@
 package com.elikill58.ipmanager.api.events.player;
 
-import com.elikill58.ipmanager.api.IpPlayer;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.events.Event;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
 
 public class PlayerLeaveEvent implements Event {
 
 	private final Player p;
-	private final IpPlayer ip;
+	private final IpPlayerAccount ip;
 	private String quitMessage;
 	
-	public PlayerLeaveEvent(Player p, IpPlayer ip, String quitMessage) {
+	public PlayerLeaveEvent(Player p, IpPlayerAccount ip, String quitMessage) {
 		this.p = p;
 		this.ip = ip;
 		this.quitMessage = quitMessage;
@@ -20,7 +20,7 @@ public class PlayerLeaveEvent implements Event {
 		return p;
 	}
 	
-	public IpPlayer getIpPlayer() {
+	public IpPlayerAccount getIpPlayer() {
 		return ip;
 	}
 	

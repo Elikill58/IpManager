@@ -7,19 +7,19 @@ import java.util.concurrent.CompletableFuture;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import com.elikill58.ipmanager.universal.account.IpManagerAccount;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
 
 public final class VoidAccountStorage extends IpManagerAccountStorage {
 
 	public static final VoidAccountStorage INSTANCE = new VoidAccountStorage();
 
 	@Override
-	public CompletableFuture<@Nullable IpManagerAccount> loadAccount(UUID playerId) {
+	public CompletableFuture<@Nullable IpPlayerAccount> loadAccount(UUID playerId) {
 		return CompletableFuture.completedFuture(null);
 	}
 
 	@Override
-	public CompletableFuture<Void> saveAccount(IpManagerAccount account) {
+	public CompletableFuture<Void> saveAccount(IpPlayerAccount account) {
 		return CompletableFuture.completedFuture(null);
 	}
 	

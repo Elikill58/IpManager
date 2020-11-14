@@ -4,27 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.elikill58.ipmanager.universal.IP;
+
 /**
  * Contains player-related data that can be accessed when the player is offline.
  */
-public final class IpManagerAccount {
+public final class IpPlayerAccount {
 
+	private IP ip = null;
 	private final UUID playerId;
 	private String playerName;
-	private String ip, proxy, fai;
+	private String basicIp, proxy, fai;
 	private final List<Long> allConnections;
 	private final long creationTime;
 
-	public IpManagerAccount(UUID playerId) {
+	public IpPlayerAccount(UUID playerId) {
 		this(playerId, null, null, null, null, new ArrayList<>(), System.currentTimeMillis());
 	}
 
-	public IpManagerAccount(UUID playerId, String playerName, String ip, String proxy, String fai, List<Long> connection, long creationTime) {
+	public IpPlayerAccount(UUID playerId, String playerName, String ip, String proxy, String fai, List<Long> connection, long creationTime) {
 		this.playerId = playerId;
 		this.playerName = playerName;
-		this.ip = ip;
-		this.setProxy(proxy);
-		this.setFai(fai);
+		this.basicIp = ip;
+		this.proxy = proxy;
+		this.fai = fai;
 		this.allConnections = connection;
 		this.creationTime = creationTime;
 	}
@@ -45,12 +48,12 @@ public final class IpManagerAccount {
 		return creationTime;
 	}
 	
-	public String getIp() {
-		return ip;
+	public String getBasicIp() {
+		return basicIp;
 	}
 	
-	public void setIp(String ip) {
-		this.ip = ip;
+	public void setBasicIp(String ip) {
+		this.basicIp = ip;
 	}
 
 	public String getProxy() {
@@ -71,5 +74,26 @@ public final class IpManagerAccount {
 
 	public List<Long> getAllConnections() {
 		return allConnections;
+	}
+	
+	public boolean isIP(String checkIp) {
+		return basicIp.equalsIgnoreCase(checkIp);
+	}
+	
+	public IP getIP() {
+		if(ip == null)
+			loadIP();
+		return ip;
+	}
+	
+	public void loadIP() {
+		if(ip != null) {
+			return;
+		}
+		this.ip = IP.getIP(basicIp);
+	}
+
+	public void save() {
+		IpPlayerAccountManager.getManager().save(playerId);
 	}
 }

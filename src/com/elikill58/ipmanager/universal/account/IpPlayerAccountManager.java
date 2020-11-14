@@ -13,13 +13,13 @@ import javax.annotation.Nullable;
 import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.dataStorage.IpManagerAccountStorage;
 
-public class IpManagerAccountManager {
+public class IpPlayerAccountManager {
 
-	protected final Map<UUID, IpManagerAccount> accounts = Collections.synchronizedMap(new HashMap<>());
-	private final Map<UUID, CompletableFuture<IpManagerAccount>> pendingRequests = Collections.synchronizedMap(new HashMap<>());
+	protected final Map<UUID, IpPlayerAccount> accounts = Collections.synchronizedMap(new HashMap<>());
+	private final Map<UUID, CompletableFuture<IpPlayerAccount>> pendingRequests = Collections.synchronizedMap(new HashMap<>());
 	private final boolean persistent;
 
-	public IpManagerAccountManager(boolean persistent) {
+	public IpPlayerAccountManager(boolean persistent) {
 		this.persistent = persistent;
 	}
 	
@@ -38,17 +38,17 @@ public class IpManagerAccountManager {
 	 *
 	 * @see #getNow
 	 */
-	public CompletableFuture<IpManagerAccount> get(UUID accountId) {
-		CompletableFuture<IpManagerAccount> pendingRequest = pendingRequests.get(accountId);
+	public CompletableFuture<IpPlayerAccount> get(UUID accountId) {
+		CompletableFuture<IpPlayerAccount> pendingRequest = pendingRequests.get(accountId);
 		if (pendingRequest != null) {
 			return pendingRequest;
 		}
 
-		IpManagerAccount existingAccount = accounts.get(accountId);
+		IpPlayerAccount existingAccount = accounts.get(accountId);
 		if (existingAccount != null) {
 			return CompletableFuture.completedFuture(existingAccount);
 		}
-		CompletableFuture<IpManagerAccount> loadFuture = IpManagerAccountStorage.getStorage().getOrCreateAccount(accountId);
+		CompletableFuture<IpPlayerAccount> loadFuture = IpManagerAccountStorage.getStorage().getOrCreateAccount(accountId);
 		pendingRequests.put(accountId, loadFuture);
 		loadFuture.whenComplete((account, throwable) -> {
 			pendingRequests.remove(accountId);
@@ -76,7 +76,7 @@ public class IpManagerAccountManager {
 	 *
 	 * @return the requested account
 	 */
-	public IpManagerAccount getNow(UUID accountId) {
+	public IpPlayerAccount getNow(UUID accountId) {
 		return get(accountId).join();
 	}
 
@@ -91,7 +91,7 @@ public class IpManagerAccountManager {
 	 */
 	public CompletableFuture<Void> save(UUID accountId) {
 		if (persistent) {
-			IpManagerAccount existingAccount = accounts.get(accountId);
+			IpPlayerAccount existingAccount = accounts.get(accountId);
 			if (existingAccount != null) {
 				return IpManagerAccountStorage.getStorage().saveAccount(existingAccount);
 			}
@@ -104,7 +104,7 @@ public class IpManagerAccountManager {
 	 *
 	 * @param account the account to use
 	 */
-	public void update(IpManagerAccount account) {
+	public void update(IpPlayerAccount account) {
 		accounts.put(account.getPlayerId(), account);
 	}
 
@@ -121,7 +121,15 @@ public class IpManagerAccountManager {
 	 * @return the disposed account, if available
 	 */
 	@Nullable
-	public IpManagerAccount dispose(UUID accountId) {
+	public IpPlayerAccount dispose(UUID accountId) {
 		return accounts.remove(accountId);
+	}
+	
+	private static IpPlayerAccountManager instance;
+	
+	public static IpPlayerAccountManager getManager() {
+		if(instance == null)
+			instance = new IpPlayerAccountManager(true);
+		return instance;
 	}
 }

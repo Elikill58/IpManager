@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.entity.OfflinePlayer;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.inventory.Inventory;
@@ -122,7 +122,7 @@ public class SpigotAdapter extends Adapter {
 	public List<Player> getOnlinePlayers() {
 		List<Player> list = new ArrayList<>();
 		for (org.bukkit.entity.Player temp : Utils.getOnlinePlayers())
-			list.add(IpPlayer.getPlayer(temp.getUniqueId(), () -> new SpigotPlayer(temp)).getPlayer());
+			list.add(Players.getPlayer(temp.getUniqueId(), () -> new SpigotPlayer(temp)));
 		return list;
 	}
 

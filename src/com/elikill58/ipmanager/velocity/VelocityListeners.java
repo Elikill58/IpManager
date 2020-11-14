@@ -2,12 +2,13 @@ package com.elikill58.ipmanager.velocity;
 
 import java.util.UUID;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.events.EventManager;
 import com.elikill58.ipmanager.api.events.player.LoginEvent;
+import com.elikill58.ipmanager.api.events.player.LoginEvent.Result;
 import com.elikill58.ipmanager.api.events.player.PlayerConnectEvent;
 import com.elikill58.ipmanager.api.events.player.PlayerLeaveEvent;
-import com.elikill58.ipmanager.api.events.player.LoginEvent.Result;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccountManager;
 import com.elikill58.ipmanager.velocity.impl.entity.VelocityPlayer;
 import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
@@ -23,9 +24,9 @@ public class VelocityListeners {
 	public void onLogin(com.velocitypowered.api.event.connection.LoginEvent e) {
 		Player p = e.getPlayer();
 		UUID uuid = p.getUniqueId();
-		LoginEvent event = new LoginEvent(IpPlayer.getPlayer(uuid, () -> new VelocityPlayer(p)), uuid,
-				p.getUsername(), e.getResult().isAllowed() ? Result.ALLOWED : Result.KICK_BANNED,
-				p.getRemoteAddress().getAddress(), p.getRemoteAddress().getAddress(), "");
+		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(uuid), uuid, p.getUsername(),
+				e.getResult().isAllowed() ? Result.ALLOWED : Result.KICK_BANNED, p.getRemoteAddress().getAddress(),
+				p.getRemoteAddress().getAddress(), "");
 		EventManager.callEvent(event);
 		if (!event.getLoginResult().equals(Result.ALLOWED))
 			e.setResult(ResultedEvent.ComponentResult.denied(TextComponent.of(event.getKickMessage())));
@@ -34,16 +35,17 @@ public class VelocityListeners {
 	@Subscribe
 	public void onPostLogin(PostLoginEvent e) {
 		Player p = e.getPlayer();
-		IpPlayer np = IpPlayer.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p));
-		PlayerConnectEvent event = new PlayerConnectEvent(np.getPlayer(), np, "");
+		PlayerConnectEvent event = new PlayerConnectEvent(
+				Players.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p)),
+				IpPlayerAccountManager.getManager().getNow(p.getUniqueId()), "");
 		EventManager.callEvent(event);
 	}
 
 	@Subscribe
 	public void onPlayerQuit(DisconnectEvent e) {
 		Player p = e.getPlayer();
-		IpPlayer np = IpPlayer.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p));
-		PlayerLeaveEvent event = new PlayerLeaveEvent(np.getPlayer(), np, "");
+		PlayerLeaveEvent event = new PlayerLeaveEvent(Players.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p)),
+				IpPlayerAccountManager.getManager().getNow(p.getUniqueId()), "");
 		EventManager.callEvent(event);
 	}
 }

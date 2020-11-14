@@ -1,12 +1,15 @@
 package com.elikill58.ipmanager.bungee;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
+import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.events.EventManager;
 import com.elikill58.ipmanager.api.events.player.LoginEvent;
+import com.elikill58.ipmanager.api.events.player.LoginEvent.Result;
 import com.elikill58.ipmanager.api.events.player.PlayerConnectEvent;
 import com.elikill58.ipmanager.api.events.player.PlayerLeaveEvent;
-import com.elikill58.ipmanager.api.events.player.LoginEvent.Result;
 import com.elikill58.ipmanager.bungee.impl.entity.BungeePlayer;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccountManager;
 
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.PendingConnection;
@@ -22,7 +25,7 @@ public class BungeeListeners implements Listener {
 	@EventHandler
 	public void onPreLogin(net.md_5.bungee.api.event.LoginEvent e) {
 		PendingConnection co = e.getConnection();
-		LoginEvent event = new LoginEvent(IpPlayer.getPlayer(co.getUniqueId(), () -> null), co.getUniqueId(), co.getName(), e.isCancelled() ? Result.KICK_BANNED : Result.ALLOWED, co.getAddress().getAddress(), co.getVirtualHost().getAddress(), e.getCancelReason());
+		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(co.getUniqueId()), co.getUniqueId(), co.getName(), e.isCancelled() ? Result.KICK_BANNED : Result.ALLOWED, co.getAddress().getAddress(), co.getVirtualHost().getAddress(), e.getCancelReason());
 		EventManager.callEvent(event);
 		if(!event.getLoginResult().equals(Result.ALLOWED)) {
 			e.setCancelled(true);
@@ -32,17 +35,19 @@ public class BungeeListeners implements Listener {
 
 	@EventHandler
 	public void onPostLogin(PostLoginEvent e) {
-		ProxiedPlayer p = e.getPlayer();
-		IpPlayer np = IpPlayer.getPlayer(p.getUniqueId(), () -> new BungeePlayer(p));
-		PlayerConnectEvent event = new PlayerConnectEvent(np.getPlayer(), np, "");
+		ProxiedPlayer pp = e.getPlayer();
+		Player p = Players.getPlayer(pp.getUniqueId(), () -> new BungeePlayer(pp));
+		IpPlayerAccount np = IpPlayerAccountManager.getManager().getNow(pp.getUniqueId());
+		PlayerConnectEvent event = new PlayerConnectEvent(p, np, "");
 		EventManager.callEvent(event);
 	}
 
 	@EventHandler
 	public void onPlayerDisconnect(PlayerDisconnectEvent e) {
-		ProxiedPlayer p = e.getPlayer();
-		IpPlayer np = IpPlayer.getPlayer(p.getUniqueId(), () -> new BungeePlayer(p));
-		PlayerLeaveEvent event = new PlayerLeaveEvent(np.getPlayer(), np, "");
+		ProxiedPlayer pp = e.getPlayer();
+		Player p = Players.getPlayer(pp.getUniqueId(), () -> new BungeePlayer(pp));
+		IpPlayerAccount np = IpPlayerAccountManager.getManager().getNow(pp.getUniqueId());
+		PlayerLeaveEvent event = new PlayerLeaveEvent(p, np, "");
 		EventManager.callEvent(event);
 	}
 }

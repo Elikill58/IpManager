@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.entity.OfflinePlayer;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.inventory.Inventory;
@@ -135,7 +135,7 @@ public class BungeeAdapter extends Adapter {
 	@Override
 	public List<Player> getOnlinePlayers() {
 		List<Player> list = new ArrayList<>();
-		pl.getProxy().getPlayers().forEach((p) -> list.add(IpPlayer.getPlayer(p.getUniqueId(), () -> new BungeePlayer(p)).getPlayer()));
+		pl.getProxy().getPlayers().forEach((p) -> list.add(Players.getPlayer(p.getUniqueId(), () -> new BungeePlayer(p))));
 		return list;
 	}
 
@@ -144,7 +144,7 @@ public class BungeeAdapter extends Adapter {
 		ProxiedPlayer pp = ProxyServer.getInstance().getPlayer(name);
 		if(pp == null)
 			return null;
-		return IpPlayer.getPlayer(pp.getUniqueId(), () -> new BungeePlayer(pp)).getPlayer();
+		return Players.getPlayer(pp.getUniqueId(), () -> new BungeePlayer(pp));
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class BungeeAdapter extends Adapter {
 		ProxiedPlayer pp = ProxyServer.getInstance().getPlayer(uuid);
 		if(pp == null)
 			return null;
-		return IpPlayer.getPlayer(uuid, () -> new BungeePlayer(pp)).getPlayer();
+		return Players.getPlayer(uuid, () -> new BungeePlayer(pp));
 	}
 
 	@Override

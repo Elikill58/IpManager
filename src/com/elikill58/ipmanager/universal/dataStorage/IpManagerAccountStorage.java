@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.elikill58.ipmanager.universal.Adapter;
 import com.elikill58.ipmanager.universal.Database;
-import com.elikill58.ipmanager.universal.account.IpManagerAccount;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
 import com.elikill58.ipmanager.universal.dataStorage.database.DatabaseIpAccountStorage;
 import com.elikill58.ipmanager.universal.dataStorage.file.FileIpAccountStorage;
 
@@ -18,12 +18,12 @@ public abstract class IpManagerAccountStorage {
 	private static final Map<String, IpManagerAccountStorage> storages = new HashMap<>();
 	private static String storageId;
 
-	public abstract CompletableFuture<IpManagerAccount> loadAccount(UUID playerId);
+	public abstract CompletableFuture<IpPlayerAccount> loadAccount(UUID playerId);
 
-	public abstract CompletableFuture<Void> saveAccount(IpManagerAccount account);
+	public abstract CompletableFuture<Void> saveAccount(IpPlayerAccount account);
 
-	public CompletableFuture<IpManagerAccount> getOrCreateAccount(UUID playerId) {
-		return loadAccount(playerId).thenApply(existingAccount -> existingAccount == null ? new IpManagerAccount(playerId) : existingAccount);
+	public CompletableFuture<IpPlayerAccount> getOrCreateAccount(UUID playerId) {
+		return loadAccount(playerId).thenApply(existingAccount -> existingAccount == null ? new IpPlayerAccount(playerId) : existingAccount);
 	}
 
 	public abstract List<UUID> getPlayersOnIP(String ip);

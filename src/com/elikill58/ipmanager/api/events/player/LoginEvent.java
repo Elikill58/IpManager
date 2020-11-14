@@ -3,19 +3,19 @@ package com.elikill58.ipmanager.api.events.player;
 import java.net.InetAddress;
 import java.util.UUID;
 
-import com.elikill58.ipmanager.api.IpPlayer;
 import com.elikill58.ipmanager.api.events.Event;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
 
 public class LoginEvent implements Event {
 
-	private final IpPlayer ip;
+	private final IpPlayerAccount ip;
 	private final UUID uuid;
 	private final String name;
 	private final InetAddress address, realAddress;
 	private Result result;
 	private String kickMessage;
 	
-	public LoginEvent(IpPlayer ip, UUID uuid, String name, Result result, InetAddress address, InetAddress realAddress, String kickMessage) {
+	public LoginEvent(IpPlayerAccount ip, UUID uuid, String name, Result result, InetAddress address, InetAddress realAddress, String kickMessage) {
 		this.ip = ip;
 		this.uuid = uuid;
 		this.name = name;
@@ -25,7 +25,7 @@ public class LoginEvent implements Event {
 		this.kickMessage = kickMessage;
 	}
 	
-	public IpPlayer getIpPlayer() {
+	public IpPlayerAccount getIpPlayer() {
 		return ip;
 	}
 	

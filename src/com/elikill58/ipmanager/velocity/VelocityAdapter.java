@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.elikill58.ipmanager.api.IpPlayer;
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.entity.OfflinePlayer;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.inventory.Inventory;
@@ -130,7 +130,7 @@ public class VelocityAdapter extends Adapter {
 	@Override
 	public List<Player> getOnlinePlayers() {
 		List<Player> list = new ArrayList<>();
-		pl.getServer().getAllPlayers().forEach((p) -> list.add(IpPlayer.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p)).getPlayer()));
+		pl.getServer().getAllPlayers().forEach((p) -> list.add(Players.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p))));
 		return list;
 	}
 
@@ -139,7 +139,7 @@ public class VelocityAdapter extends Adapter {
 		Optional<com.velocitypowered.api.proxy.Player> opt = pl.getServer().getPlayer(name);
 		if(opt.isPresent()) {
 			com.velocitypowered.api.proxy.Player p = opt.get();
-			return IpPlayer.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p)).getPlayer();
+			return Players.getPlayer(p.getUniqueId(), () -> new VelocityPlayer(p));
 		} else
 			return null;
 	}
@@ -148,7 +148,7 @@ public class VelocityAdapter extends Adapter {
 	public Player getPlayer(UUID uuid) {
 		Optional<com.velocitypowered.api.proxy.Player> opt = pl.getServer().getPlayer(uuid);
 		if(opt.isPresent()) {
-			return IpPlayer.getPlayer(uuid, () -> new VelocityPlayer(opt.get())).getPlayer();
+			return Players.getPlayer(uuid, () -> new VelocityPlayer(opt.get()));
 		} else
 			return null;
 	}

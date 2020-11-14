@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import com.elikill58.ipmanager.universal.Database;
-import com.elikill58.ipmanager.universal.account.IpManagerAccount;
+import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
 import com.elikill58.ipmanager.universal.dataStorage.IpManagerAccountStorage;
 
 public class DatabaseIpAccountStorage extends IpManagerAccountStorage {
@@ -29,7 +29,7 @@ public class DatabaseIpAccountStorage extends IpManagerAccountStorage {
 	}
 
 	@Override
-	public CompletableFuture<IpManagerAccount> loadAccount(UUID playerId) {
+	public CompletableFuture<IpPlayerAccount> loadAccount(UUID playerId) {
 		return CompletableFuture.supplyAsync(() -> {
 			try (PreparedStatement stm = Database.getConnection().prepareStatement("SELECT * FROM ipmanager_accounts WHERE id = ?")) {
 				stm.setString(1, playerId.toString());
@@ -41,23 +41,23 @@ public class DatabaseIpAccountStorage extends IpManagerAccountStorage {
 					String fai = result.getString("fai");
 					String connection = result.getString("connection");
 					long creationTime = result.getTimestamp("creation_time").getTime();
-					return new IpManagerAccount(playerId, playerName, IP, proxy, fai, deserializeConnections(connection), creationTime);
+					return new IpPlayerAccount(playerId, playerName, IP, proxy, fai, deserializeConnections(connection), creationTime);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			return new IpManagerAccount(playerId);
+			return new IpPlayerAccount(playerId);
 		});
 	}
 
 	@Override
-	public CompletableFuture<Void> saveAccount(IpManagerAccount account) {
+	public CompletableFuture<Void> saveAccount(IpPlayerAccount account) {
 		return CompletableFuture.runAsync(() -> {
 			try (PreparedStatement stm = Database.getConnection().prepareStatement(
 					"REPLACE INTO ipmanager_accounts (id, playername, ip, proxy, fai, connection, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
 				stm.setString(1, account.getPlayerId().toString());
 				stm.setString(2, account.getPlayerName());
-				stm.setString(3, account.getIp());
+				stm.setString(3, account.getBasicIp());
 				stm.setString(4, account.getProxy());
 				stm.setString(5, account.getFai());
 				stm.setString(6, serializeConnections(account));
@@ -69,7 +69,7 @@ public class DatabaseIpAccountStorage extends IpManagerAccountStorage {
 		});
 	}
 
-	private static String serializeConnections(IpManagerAccount account) {
+	private static String serializeConnections(IpPlayerAccount account) {
 		StringJoiner joiner = new StringJoiner(";");
 		account.getAllConnections().forEach((l) -> joiner.add(String.valueOf(l)));
 		return joiner.toString();
