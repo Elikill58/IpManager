@@ -19,44 +19,58 @@ public class IP {
 
 	public IP(String ip) {
 		this.ip = ip;
-
-		new Thread(() -> {
+		if(ip.equalsIgnoreCase("127.0.0.1") || ip.equalsIgnoreCase("localhost")) {
+			ipInfos.put(IpInfos.CITY, "All");
+			ipInfos.put(IpInfos.REGION, "All");
+			ipInfos.put(IpInfos.REGION_CODE, "--");
+			ipInfos.put(IpInfos.COUNTRY_CODE, "All");
+			ipInfos.put(IpInfos.COUNTRY_NAME, "All");
+			ipInfos.put(IpInfos.CONTINENT_CODE, "");
+			ipInfos.put(IpInfos.IN_EU, "Everywhere");
+			ipInfos.put(IpInfos.TIMEZONE, "GMT");
+			ipInfos.put(IpInfos.LANGUAGUES, "ALL");
+			ipInfos.put(IpInfos.ASN, "Own");
+			ipInfos.put(IpInfos.ORG, "Own");
+			ipInfos.put(IpInfos.UNSET, "-");
+		} else {
+			new Thread(() -> {
+				try {
+					String checkingVpn = UniversalUtils
+							.getContentFromURL(UniversalUtils.getServerURL() + "ipmanager.php?ip=" + ip).orElse("{}");
+					Object data = new JSONParser().parse(checkingVpn);
+					if (data instanceof JSONObject) {
+						JSONObject json = (JSONObject) data;
+						Object status = json.get("status");
+						if (status.toString().equalsIgnoreCase("ok")) {
+							JSONObject result = ((JSONObject) json.get("result"));
+							isVPN = result.get("vpn") == "true";
+							isProxy = result.get("proxy") == "true";
+							isHosting = result.get("hosting") == "true";
+						} else {
+							LoggerAdapter log = Adapter.getAdapter().getLogger();
+							log.error("Error while loading VPN data for " + ip + ": " + status.toString());
+							log.error("Result: " + checkingVpn);
+						}
+					} else
+						throw new NoSuchFieldException("Cannot found JSON vpn data for '" + allIpJsonInfos + "' string.");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}).start();
+			new Thread(() -> allIpJsonInfos = UniversalUtils.getContentFromURL("https://ipapi.co/" + ip + "/json/")
+					.orElse("{}")).start();
 			try {
-				String checkingVpn = UniversalUtils
-						.getContentFromURL(UniversalUtils.getServerURL() + "ipmanager.php?ip=" + ip).orElse("{}");
-				Object data = new JSONParser().parse(checkingVpn);
+				Object data = new JSONParser().parse(allIpJsonInfos);
 				if (data instanceof JSONObject) {
 					JSONObject json = (JSONObject) data;
-					Object status = json.get("status");
-					if (status.toString().equalsIgnoreCase("ok")) {
-						JSONObject result = ((JSONObject) json.get("result"));
-						isVPN = result.get("vpn") == "true";
-						isProxy = result.get("proxy") == "true";
-						isHosting = result.get("hosting") == "true";
-					} else {
-						LoggerAdapter log = Adapter.getAdapter().getLogger();
-						log.error("Error while loading VPN data for " + ip + ": " + status.toString());
-						log.error("Result: " + checkingVpn);
-					}
+					for (IpInfos ii : IpInfos.values())
+						if (!ii.equals(IpInfos.UNSET))
+							ipInfos.put(ii, json.getOrDefault(ii.name().toLowerCase(), "unknow").toString());
 				} else
-					throw new NoSuchFieldException("Cannot found JSON vpn data for '" + allIpJsonInfos + "' string.");
+					throw new NoSuchFieldException("Cannot found JSON data for '" + allIpJsonInfos + "' string.");
 			} catch (Exception e) {
-				e.printStackTrace();
+				ipInfos.put(IpInfos.UNSET, "Error while getting IP information : " + e.getMessage() + ".");
 			}
-		}).start();
-		new Thread(() -> allIpJsonInfos = UniversalUtils.getContentFromURL("https://ipapi.co/" + ip + "/json/")
-				.orElse("{}")).start();
-		try {
-			Object data = new JSONParser().parse(allIpJsonInfos);
-			if (data instanceof JSONObject) {
-				JSONObject json = (JSONObject) data;
-				for (IpInfos ii : IpInfos.values())
-					if (!ii.equals(IpInfos.UNSET))
-						ipInfos.put(ii, json.getOrDefault(ii.name().toLowerCase(), "unknow").toString());
-			} else
-				throw new NoSuchFieldException("Cannot found JSON data for '" + allIpJsonInfos + "' string.");
-		} catch (Exception e) {
-			ipInfos.put(IpInfos.UNSET, "Error while getting IP information : " + e.getMessage() + ".");
 		}
 	}
 
