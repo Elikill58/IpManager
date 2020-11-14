@@ -11,14 +11,13 @@ public class TabExecutionEvent implements Event {
 	private final CommandSender sender;
 	private final String[] arg;
 	private final String command, prefix;
-	private List<String> tabContent;
+	private List<String> tabContent = new ArrayList<>();
 
 	public TabExecutionEvent(String command, CommandSender sender, String[] arg, String prefix) {
 		this.command = command;
 		this.sender = sender;
 		this.arg = arg;
 		this.prefix = prefix;
-		this.tabContent = new ArrayList<>();
 	}
 
 	public String getCommand() {
@@ -42,6 +41,6 @@ public class TabExecutionEvent implements Event {
 	}
 	
 	public void setTabContent(List<String> content) {
-		this.tabContent = content;
+		this.tabContent = content == null ? new ArrayList<>() : content;
 	}
 }

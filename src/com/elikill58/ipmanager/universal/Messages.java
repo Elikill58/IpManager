@@ -1,6 +1,7 @@
 package com.elikill58.ipmanager.universal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.elikill58.ipmanager.api.commands.CommandSender;
@@ -15,7 +16,7 @@ public class Messages {
 	public static List<String> getStringList(String key, String... placeholders){
 		List<String> last = Adapter.getAdapter().getConfig().getStringList(key);
 		if(last.size() == 0)
-			return new ArrayList<>();
+			return Arrays.asList(key);
 		List<String> l = new ArrayList<>();
 		for(String s : last) {
 			for (int index = 0; index <= placeholders.length - 1; index += 2)
@@ -26,7 +27,7 @@ public class Messages {
 	}
 	
 	public static String getMessage(boolean b) {
-		return getMessage(b ? "yes" : "no");
+		return getMessage(b ? "msg-yes" : "msg-no");
 	}
 	
 	public static String getMessage(String key, String... placeholders) {

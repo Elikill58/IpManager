@@ -79,6 +79,7 @@ public class ConnectionEvents implements Listeners {
 	public void onJoin(PlayerConnectEvent e) {
 		Player p = e.getPlayer();
 		IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(p.getUniqueId());
+		ip.setBasicIp(p.getIP());
 		ip.loadIP();
 		ip.setFai(p.getAddress().getHostName());
 		ip.save();

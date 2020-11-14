@@ -66,8 +66,8 @@ messages:
   cannot_found: "&cCannot found player !"
   not_registered: "&cIP of &e%name% &cnot registered"
   unknow: "Unknow"
-  yes: "Yes"
-  no: "No"
+  msg-yes: "Yes"
+  msg-no: "No"
   getip:
     # What is the difference between 'ip', 'bungee_ip' and 'fai' ?
     # ip: the real user ip

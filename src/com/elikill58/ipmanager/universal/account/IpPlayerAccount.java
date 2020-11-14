@@ -31,6 +31,8 @@ public final class IpPlayerAccount {
 		this.fai = fai;
 		this.allConnections = connection;
 		this.creationTime = creationTime;
+		
+		loadIP();
 	}
 
 	public UUID getPlayerId() {
@@ -88,7 +90,7 @@ public final class IpPlayerAccount {
 	}
 	
 	public void loadIP() {
-		if(ip != null) {
+		if(ip != null || basicIp == null) {
 			return;
 		}
 		this.ip = IP.getIP(basicIp);

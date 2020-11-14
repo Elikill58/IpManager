@@ -12,6 +12,7 @@ import com.elikill58.ipmanager.api.location.Location;
 import com.elikill58.ipmanager.api.location.Vector;
 import com.elikill58.ipmanager.api.location.World;
 
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -171,11 +172,11 @@ public class BungeePlayer extends Player {
 	
 	@Override
 	public void performCommand(String cmd) {
-		
+		ProxyServer.getInstance().getPluginManager().dispatchCommand(pp, cmd);
 	}
 	
 	@Override
 	public InetSocketAddress getAddress() {
-		return null;
+		return pp.getAddress();
 	}
 }
