@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 
 import com.elikill58.ipmanager.api.GameMode;
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.entity.Entity;
 import com.elikill58.ipmanager.api.entity.EntityType;
 import com.elikill58.ipmanager.api.entity.Player;
@@ -96,8 +97,8 @@ public class SpigotPlayer extends Player {
 	}
 
 	@Override
-	public String getIP() {
-		return p.getAddress().getAddress().getHostAddress();
+	public PlayerAddress getIP() {
+		return new PlayerAddress(p.getAddress());
 	}
 
 	@Override

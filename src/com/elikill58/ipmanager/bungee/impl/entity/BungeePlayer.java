@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.UUID;
 
 import com.elikill58.ipmanager.api.GameMode;
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.entity.Entity;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.inventory.Inventory;
@@ -29,8 +30,8 @@ public class BungeePlayer extends Player {
 	}
 	
 	@Override
-	public String getIP() {
-		return pp.getAddress().getAddress().getHostAddress();
+	public PlayerAddress getIP() {
+		return new PlayerAddress(pp.getPendingConnection().getVirtualHost());
 	}
 
 	@Override
@@ -133,6 +134,6 @@ public class BungeePlayer extends Player {
 	
 	@Override
 	public InetSocketAddress getAddress() {
-		return pp.getAddress();
+		return pp.getPendingConnection().getVirtualHost();
 	}
 }

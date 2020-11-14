@@ -27,7 +27,7 @@ public class Messages {
 	}
 	
 	public static String getMessage(boolean b) {
-		return getMessage(b ? "msg-yes" : "msg-no");
+		return getMessage(b ? "messages.msg-yes" : "messages.msg-no");
 	}
 	
 	public static String getMessage(String key, String... placeholders) {

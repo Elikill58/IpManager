@@ -2,6 +2,7 @@ package com.elikill58.ipmanager.velocity;
 
 import java.util.UUID;
 
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.events.EventManager;
 import com.elikill58.ipmanager.api.events.player.LoginEvent;
@@ -25,8 +26,8 @@ public class VelocityListeners {
 		Player p = e.getPlayer();
 		UUID uuid = p.getUniqueId();
 		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(uuid), uuid, p.getUsername(),
-				e.getResult().isAllowed() ? Result.ALLOWED : Result.KICK_BANNED, p.getRemoteAddress().getAddress(),
-				p.getRemoteAddress().getAddress(), "");
+				e.getResult().isAllowed() ? Result.ALLOWED : Result.KICK_BANNED, new PlayerAddress(p.getRemoteAddress()),
+				new PlayerAddress(p.getRemoteAddress()), "");
 		EventManager.callEvent(event);
 		if (!event.getLoginResult().equals(Result.ALLOWED))
 			e.setResult(ResultedEvent.ComponentResult.denied(TextComponent.of(event.getKickMessage())));

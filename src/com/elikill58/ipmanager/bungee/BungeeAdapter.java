@@ -157,11 +157,17 @@ public class BungeeAdapter extends Adapter {
 
 	@Override
 	public OfflinePlayer getOfflinePlayer(String name) {
+		Player tempP = getPlayer(name);
+		if(tempP != null)
+			return tempP;
 		return null;
 	}
 	
 	@Override
 	public OfflinePlayer getOfflinePlayer(UUID uuid) {
+		Player tempP = getPlayer(uuid);
+		if(tempP != null)
+			return tempP;
 		// TODO add support for offline bungee players
 		return null;
 	}

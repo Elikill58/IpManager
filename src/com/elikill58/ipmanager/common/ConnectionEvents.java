@@ -26,7 +26,7 @@ public class ConnectionEvents implements Listeners {
 	public void onLogin(LoginEvent e) {
 		Adapter pl = Adapter.getAdapter();
 		Configuration config = pl.getConfig();
-		String bungeeIP = e.getRealAddress().getHostAddress(), basicIp = e.getAddress().getHostAddress();
+		String bungeeIP = e.getRealAddress().getHost(), basicIp = e.getAddress().getHost();
 		if(config.getBoolean("log_console"))
 			pl.getLogger().info(Messages.getMessage("messages.log_console", "%name%", e.getName(), "%uuid%", e.getUUID().toString(), "%ip%", basicIp));
 		IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(e.getUUID());
@@ -79,7 +79,7 @@ public class ConnectionEvents implements Listeners {
 	public void onJoin(PlayerConnectEvent e) {
 		Player p = e.getPlayer();
 		IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(p.getUniqueId());
-		ip.setBasicIp(p.getIP());
+		ip.setBasicIp(p.getIP().getHost());
 		ip.loadIP();
 		ip.setFai(p.getAddress().getHostName());
 		ip.save();

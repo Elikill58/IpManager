@@ -28,6 +28,6 @@ public class Players {
 	}
 
 	public static List<Player> getPlayersOnIP(String IP){
-		return Adapter.getAdapter().getOnlinePlayers().stream().filter((p) -> p.getIP().equalsIgnoreCase(IP)).collect(Collectors.toList());
+		return Adapter.getAdapter().getOnlinePlayers().stream().filter((p) -> p.getIP().getHost().equalsIgnoreCase(IP)).collect(Collectors.toList());
 	}
 }

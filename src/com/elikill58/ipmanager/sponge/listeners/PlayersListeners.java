@@ -16,6 +16,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.events.EventManager;
 import com.elikill58.ipmanager.api.events.player.LoginEvent;
@@ -43,8 +44,8 @@ public class PlayersListeners {
 		RemoteConnection co = e.getConnection();
 		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(profil.getUniqueId()),
 				profil.getUniqueId(), profil.getName().orElse(null),
-				e.isCancelled() ? Result.KICK_BANNED : Result.ALLOWED, co.getAddress().getAddress(),
-				co.getVirtualHost().getAddress(), e.getMessage().toPlain());
+				e.isCancelled() ? Result.KICK_BANNED : Result.ALLOWED, new PlayerAddress(co.getAddress()),
+				new PlayerAddress(co.getVirtualHost()), e.getMessage().toPlain());
 		EventManager.callEvent(event);
 		e.setMessage(Text.of(event.getKickMessage()));
 		e.setCancelled(!event.getLoginResult().equals(Result.ALLOWED));

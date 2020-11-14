@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.events.EventManager;
 import com.elikill58.ipmanager.api.events.player.LoginEvent;
@@ -108,7 +109,8 @@ public class PlayersListeners implements Listener {
 	public void onPreLogin(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		UUID uuid = p.getUniqueId();
-		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(p.getUniqueId()), uuid, p.getName(), Result.valueOf(e.getResult().name()), e.getAddress(), e.getRealAddress(), e.getKickMessage());
+		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(p.getUniqueId()), uuid, p.getName(), Result.valueOf(e.getResult().name()),
+				new PlayerAddress(e.getAddress()), new PlayerAddress(e.getRealAddress()), e.getKickMessage());
 		EventManager.callEvent(event);
 		e.setKickMessage(event.getKickMessage());
 		e.setResult(PlayerLoginEvent.Result.valueOf(event.getLoginResult().name()));

@@ -9,6 +9,7 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
 import com.elikill58.ipmanager.api.GameMode;
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.entity.Entity;
 import com.elikill58.ipmanager.api.entity.EntityType;
 import com.elikill58.ipmanager.api.entity.Player;
@@ -107,8 +108,8 @@ public class SpongePlayer extends Player {
 	}
 
 	@Override
-	public String getIP() {
-		return p.getConnection().getAddress().getAddress().getHostAddress();
+	public PlayerAddress getIP() {
+		return new PlayerAddress(p.getConnection().getAddress());
 	}
 
 	@Override

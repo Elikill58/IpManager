@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.elikill58.ipmanager.api.json.JSONObject;
 import com.elikill58.ipmanager.api.json.parser.JSONParser;
 import com.elikill58.ipmanager.universal.exception.NotLoadedException;
+import com.elikill58.ipmanager.universal.logger.LoggerAdapter;
 import com.elikill58.ipmanager.universal.utils.UniversalUtils;
 
 @SuppressWarnings("unchecked")
@@ -33,8 +34,9 @@ public class IP {
 						isProxy = result.get("proxy") == "true";
 						isHosting = result.get("hosting") == "true";
 					} else {
-						Adapter.getAdapter().getLogger()
-								.error("Error while loading VPN data for " + ip + ": " + status.toString());
+						LoggerAdapter log = Adapter.getAdapter().getLogger();
+						log.error("Error while loading VPN data for " + ip + ": " + status.toString());
+						log.error("Result: " + checkingVpn);
 					}
 				} else
 					throw new NoSuchFieldException("Cannot found JSON vpn data for '" + allIpJsonInfos + "' string.");

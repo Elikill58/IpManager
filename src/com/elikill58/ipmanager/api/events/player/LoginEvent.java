@@ -1,8 +1,8 @@
 package com.elikill58.ipmanager.api.events.player;
 
-import java.net.InetAddress;
 import java.util.UUID;
 
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.events.Event;
 import com.elikill58.ipmanager.universal.account.IpPlayerAccount;
 
@@ -11,11 +11,11 @@ public class LoginEvent implements Event {
 	private final IpPlayerAccount ip;
 	private final UUID uuid;
 	private final String name;
-	private final InetAddress address, realAddress;
+	private final PlayerAddress address, realAddress;
 	private Result result;
 	private String kickMessage;
 	
-	public LoginEvent(IpPlayerAccount ip, UUID uuid, String name, Result result, InetAddress address, InetAddress realAddress, String kickMessage) {
+	public LoginEvent(IpPlayerAccount ip, UUID uuid, String name, Result result, PlayerAddress address, PlayerAddress realAddress, String kickMessage) {
 		this.ip = ip;
 		this.uuid = uuid;
 		this.name = name;
@@ -41,11 +41,11 @@ public class LoginEvent implements Event {
 		return result;
 	}
 	
-	public InetAddress getAddress() {
+	public PlayerAddress getAddress() {
 		return address;
 	}
 	
-	public InetAddress getRealAddress() {
+	public PlayerAddress getRealAddress() {
 		return realAddress;
 	}
 	

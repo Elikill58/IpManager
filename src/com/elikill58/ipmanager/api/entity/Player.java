@@ -2,9 +2,8 @@ package com.elikill58.ipmanager.api.entity;
 
 import java.net.InetSocketAddress;
 
-import javax.annotation.Nullable;
-
 import com.elikill58.ipmanager.api.GameMode;
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.inventory.Inventory;
 import com.elikill58.ipmanager.api.inventory.PlayerInventory;
 import com.elikill58.ipmanager.api.location.Location;
@@ -17,8 +16,7 @@ public abstract class Player extends OfflinePlayer {
 	 * 
 	 * @return player IP
 	 */
-	@Nullable
-	public abstract String getIP();
+	public abstract PlayerAddress getIP();
 	
 	/**
 	 * Know if the player is dead

@@ -1,5 +1,6 @@
 package com.elikill58.ipmanager.bungee;
 
+import com.elikill58.ipmanager.api.PlayerAddress;
 import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.events.EventManager;
@@ -21,13 +22,15 @@ import net.md_5.bungee.event.EventHandler;
 
 public class BungeeListeners implements Listener {
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPreLogin(net.md_5.bungee.api.event.LoginEvent e) {
 		PendingConnection co = e.getConnection();
-		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(co.getUniqueId()), co.getUniqueId(), co.getName(), e.isCancelled() ? Result.KICK_BANNED : Result.ALLOWED, co.getAddress().getAddress(), co.getVirtualHost().getAddress(), e.getCancelReason());
+		@SuppressWarnings("deprecation")
+		LoginEvent event = new LoginEvent(IpPlayerAccountManager.getManager().getNow(co.getUniqueId()),
+				co.getUniqueId(), co.getName(), e.isCancelled() ? Result.KICK_BANNED : Result.ALLOWED,
+				new PlayerAddress(co.getVirtualHost()), new PlayerAddress(co.getAddress()), "");
 		EventManager.callEvent(event);
-		if(!event.getLoginResult().equals(Result.ALLOWED)) {
+		if (!event.getLoginResult().equals(Result.ALLOWED)) {
 			e.setCancelled(true);
 			e.setCancelReason(new ComponentBuilder(event.getKickMessage()).create());
 		}

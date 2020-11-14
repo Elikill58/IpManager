@@ -26,7 +26,7 @@ public final class IpPlayerAccount {
 	public IpPlayerAccount(UUID playerId, String playerName, String ip, String proxy, String fai, List<Long> connection, long creationTime) {
 		this.playerId = playerId;
 		this.playerName = playerName;
-		this.basicIp = ip == null && Players.getPlayer(playerId) != null ? Players.getPlayer(playerId).getIP() : ip;
+		this.basicIp = ip == null && Players.getPlayer(playerId) != null ? Players.getPlayer(playerId).getIP().getHost() : ip;
 		this.proxy = proxy;
 		this.fai = fai;
 		this.allConnections = connection;
