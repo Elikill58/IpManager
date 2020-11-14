@@ -17,8 +17,8 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 
-@Plugin(id = "negativity", name = "Negativity", version = UniversalUtils.IP_MANAGER_VERSION,
-        description = "It's an Advanced AntiCheat Detection", authors = {"Elikill58", "RedNesto"})
+@Plugin(id = "ipmanager", name = "IpManager", version = UniversalUtils.IP_MANAGER_VERSION,
+        description = "Manage player IP - Remove security problem with proxy", authors = {"Elikill58"})
 public class VelocityIpManager {
 	
     private final ProxyServer server;
@@ -40,18 +40,18 @@ public class VelocityIpManager {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-    	getLogger().info("Loading Negativity");
+    	getLogger().info("Loading IpManager");
 	    
 		Adapter.setAdapter(new VelocityAdapter(this));
 		
 		IpManager.init();
 		
 	    server.getEventManager().register(this, new VelocityListeners());
-	    server.getCommandManager().register(new VelocityGetIpCommand(), "vnegativity");
+	    server.getCommandManager().register(new VelocityGetIpCommand(), "getip");
 
-		IpManagerAccountStorage.setDefaultStorage("database");
+		IpManagerAccountStorage.setDefaultStorage("file");
 
-    	getLogger().info("Negativity enabled");
+    	getLogger().info("IpManager enabled");
 	}
 
     @Subscribe
@@ -64,6 +64,6 @@ public class VelocityIpManager {
     }
 
     public final File getDataFolder() {
-        return new File("./plugins/Negativity");
+        return new File("./plugins/IpManager");
     }
 }

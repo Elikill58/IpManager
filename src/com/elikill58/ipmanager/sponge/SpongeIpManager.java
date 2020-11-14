@@ -61,7 +61,7 @@ public class SpongeIpManager {
 
 		IpManagerAccountStorage.setDefaultStorage("file");
 
-		plugin.getLogger().info("Negativity v" + plugin.getVersion().get() + " loaded.");
+		plugin.getLogger().info("IpManager v" + plugin.getVersion().get() + " loaded.");
 	}
 
 	@Listener

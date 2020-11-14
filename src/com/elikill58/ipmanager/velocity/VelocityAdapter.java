@@ -155,11 +155,18 @@ public class VelocityAdapter extends Adapter {
 
 	@Override
 	public OfflinePlayer getOfflinePlayer(String name) {
+		Player p = getPlayer(name);
+		if(p != null)
+			return p;
 		return null;
 	}
 	
 	@Override
 	public OfflinePlayer getOfflinePlayer(UUID uuid) {
+		Player p = getPlayer(uuid);
+		if(p != null)
+			return p;
+		// TODO add support of offline player for proxies
 		return null;
 	}
 
