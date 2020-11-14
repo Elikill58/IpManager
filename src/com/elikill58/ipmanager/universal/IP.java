@@ -2,9 +2,8 @@ package com.elikill58.ipmanager.universal;
 
 import java.util.HashMap;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
+import com.elikill58.ipmanager.api.json.JSONObject;
+import com.elikill58.ipmanager.api.json.parser.JSONParser;
 import com.elikill58.ipmanager.universal.exception.NotLoadedException;
 import com.elikill58.ipmanager.universal.utils.UniversalUtils;
 
