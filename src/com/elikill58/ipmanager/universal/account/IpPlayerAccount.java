@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.elikill58.ipmanager.api.Players;
 import com.elikill58.ipmanager.universal.IP;
 
 /**
@@ -25,7 +26,7 @@ public final class IpPlayerAccount {
 	public IpPlayerAccount(UUID playerId, String playerName, String ip, String proxy, String fai, List<Long> connection, long creationTime) {
 		this.playerId = playerId;
 		this.playerName = playerName;
-		this.basicIp = ip;
+		this.basicIp = ip == null && Players.getPlayer(playerId) != null ? Players.getPlayer(playerId).getIP() : ip;
 		this.proxy = proxy;
 		this.fai = fai;
 		this.allConnections = connection;
