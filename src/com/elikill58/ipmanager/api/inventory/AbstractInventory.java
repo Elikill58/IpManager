@@ -80,19 +80,6 @@ public abstract class AbstractInventory<T extends NegativityHolder> {
 	public void actualizeInventory(Player p, Object... args) {}
 	
 	public static enum NegativityInventory {
-		ACTIVED_CHEAT,
-		ADMIN,
-		ALERT,
-		BAN,
-		CHECK_MENU,
-		CHEAT_MANAGER,
-		FREEZE,
-		KICK,
-		MOD,
-		ONE_CHEAT,
-		FORGE_MODS,
-		LANG,
-		REPORT,
-		SEE_REPORT;
+		IP_PLAYER;
 	}
 }

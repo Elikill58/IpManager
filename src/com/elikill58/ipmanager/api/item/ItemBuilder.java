@@ -126,6 +126,6 @@ public abstract class ItemBuilder {
 	 * @return the skull item which will be set in inventory
 	 */
 	public static ItemStack getSkullItem(Player cible) {
-		return ItemBuilder.Builder(cible).displayName(cible.getName()).lore(ChatColor.GOLD + "UUID: " + cible.getUniqueId()).build();
+		return ItemBuilder.Builder(cible).displayName(ChatColor.YELLOW + cible.getName()).lore(ChatColor.GOLD + "UUID: " + cible.getUniqueId()).build();
 	}
 }

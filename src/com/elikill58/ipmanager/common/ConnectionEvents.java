@@ -28,7 +28,7 @@ public class ConnectionEvents implements Listeners {
 		Configuration config = pl.getConfig();
 		String bungeeIP = e.getRealAddress().getHost(), basicIp = e.getAddress().getHost();
 		if(config.getBoolean("log_console"))
-			pl.getLogger().info(Messages.getMessage("messages.log_console", "%name%", e.getName(), "%uuid%", e.getUUID().toString(), "%ip%", basicIp));
+			pl.getLogger().info(Messages.getMessage("log_console", "%name%", e.getName(), "%uuid%", e.getUUID().toString(), "%ip%", basicIp));
 		IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(e.getUUID());
 		ip.setBasicIp(basicIp);
 		ip.setProxy(bungeeIP);
@@ -37,7 +37,7 @@ public class ConnectionEvents implements Listeners {
 		if(config.getBoolean("only_proxy.enabled")) {
 			if(!config.getStringList("only_proxy.bungee_ip").contains(bungeeIP)) {
 				if(config.getBoolean("only_proxy.kick")) {
-					e.setKickMessage(Messages.getMessage("messages.wrong_proxy"));
+					e.setKickMessage(Messages.getMessage("wrong_proxy"));
 					e.setLoginResult(Result.KICK_OTHER);
 				}
 				String cmd = config.getString("only_proxy.command_wrong_proxy");
@@ -50,7 +50,7 @@ public class ConnectionEvents implements Listeners {
 
 		if(config.getBoolean("banned-ip.enabled")) {
 			if(config.getStringList("banned-ip.disallow").contains(basicIp)) {
-				e.setKickMessage(Messages.getMessage("messages.ip_not_allowed"));
+				e.setKickMessage(Messages.getMessage("ip_not_allowed"));
 				e.setLoginResult(Result.KICK_BANNED);
 			}
 		}

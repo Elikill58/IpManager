@@ -109,5 +109,9 @@ public abstract class Player extends OfflinePlayer {
 		}
 		return this.getUniqueId().equals(((Player) obj).getUniqueId());
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Player{type=" + getType().name() + ",x=" + getLocation().getX() + ",y=" + getLocation().getY() + ",z=" + getLocation().getZ() + "}";
+	}
 }

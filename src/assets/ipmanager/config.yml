@@ -68,6 +68,39 @@ messages:
   unknow: "Unknow"
   msg-yes: "Yes"
   msg-no: "No"
+  inv:
+    close: "Close"
+    player:
+      name: "&eIP of %cible%"
+      basicip: "&eIP&7: &e%basic%"
+      proxy: "&eProxy&7: &e%proxy%"
+      fai: "&eFai&7: &e%fai%"
+      ping: "&ePing&7: &e%ping%"
+      sub1:
+        name: "&eCity & Region"
+        lore:
+        - "&7%city%"
+        - "&7%region% &8(%region_code%)"
+      sub2:
+        name: "&eCountry & Continent"
+        lore:
+        - "&7%country_name% &8(%country_code%)"
+        - "&7%continent_code%"
+      sub3:
+        name: "&eOrganization"
+        lore:
+        - "&7%asn%"
+        - "&7%org%"
+      sub4:
+        name: "&eOthers"
+        lore:
+        - "&7%in_eu%"
+        - "&7%timezone%"
+        - "&7%languagues%"
+      sub5:
+        name: "&eI.D.K."
+        lore:
+        - "&7I don't know"
   getip:
     # What is the difference between 'ip', 'bungee_ip' and 'fai' ?
     # ip: the real user ip

@@ -9,12 +9,12 @@ import com.elikill58.ipmanager.api.events.inventory.InventoryClickEvent;
 import com.elikill58.ipmanager.api.inventory.AbstractInventory.NegativityInventory;
 import com.elikill58.ipmanager.api.item.Material;
 import com.elikill58.ipmanager.api.item.Materials;
-import com.elikill58.ipmanager.common.inventories.ReportInventory;
+import com.elikill58.ipmanager.common.inventories.IpPlayerInventory;
 
 public class InventoryManager implements Listeners {
 	
 	public InventoryManager() {
-		new ReportInventory();
+		new IpPlayerInventory();
 		AbstractInventory.INVENTORIES.forEach(AbstractInventory::load);
 	}
 	

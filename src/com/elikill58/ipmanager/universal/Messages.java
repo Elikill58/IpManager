@@ -10,24 +10,24 @@ import com.elikill58.ipmanager.api.utils.Utils;
 public class Messages {
 	
 	private static String get(String msg) {
-		return Adapter.getAdapter().getConfig().getString(msg);
+		return Adapter.getAdapter().getConfig().getString("messages." + msg);
 	}
 	
 	public static List<String> getStringList(String key, String... placeholders){
-		List<String> last = Adapter.getAdapter().getConfig().getStringList(key);
+		List<String> last = Adapter.getAdapter().getConfig().getStringList("messages." + key);
 		if(last.size() == 0)
 			return Arrays.asList(key);
 		List<String> l = new ArrayList<>();
 		for(String s : last) {
 			for (int index = 0; index <= placeholders.length - 1; index += 2)
-				s = s.replaceAll(placeholders[index], placeholders[index + 1]);
+				s = s.replaceAll(getNull(placeholders[index]), getNull(placeholders[index + 1]));
 			l.add(Utils.coloredMessage(s));
 		}
 		return l;
 	}
 	
 	public static String getMessage(boolean b) {
-		return getMessage(b ? "messages.msg-yes" : "messages.msg-no");
+		return getMessage(b ? "msg-yes" : "msg-no");
 	}
 	
 	public static String getMessage(String key, String... placeholders) {
@@ -35,8 +35,12 @@ public class Messages {
 		if(message == null)
 			message = key;
 		for (int index = 0; index <= placeholders.length - 1; index += 2)
-			message = message.replaceAll(placeholders[index], placeholders[index + 1]);
+			message = message.replaceAll(getNull(placeholders[index]), getNull(placeholders[index + 1]));
 		return Utils.coloredMessage(message);
+	}
+	
+	private static String getNull(String obj) {
+		return obj == null ? "" : obj;
 	}
 	
 	public static void sendMessage(CommandSender p, String key, String... placeholders) {
