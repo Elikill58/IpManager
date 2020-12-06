@@ -76,6 +76,7 @@ messages:
       proxy: "&eProxy&7: &e%proxy%"
       fai: "&eFai&7: &e%fai%"
       ping: "&ePing&7: &e%ping%"
+      connections: "&6See all connections time"
       sub1:
         name: "&eCity & Region"
         lore:
@@ -101,6 +102,10 @@ messages:
         name: "&eI.D.K."
         lore:
         - "&7I don't know"
+    connections:
+      name: "Connections of %cible%"
+      co_name: "&aDate: %date%"
+      lore_line: "&7%date%"
   getip:
     # What is the difference between 'ip', 'bungee_ip' and 'fai' ?
     # ip: the real user ip

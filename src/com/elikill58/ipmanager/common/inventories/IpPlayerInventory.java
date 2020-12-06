@@ -10,6 +10,7 @@ import com.elikill58.ipmanager.api.entity.Player;
 import com.elikill58.ipmanager.api.events.inventory.InventoryClickEvent;
 import com.elikill58.ipmanager.api.inventory.AbstractInventory;
 import com.elikill58.ipmanager.api.inventory.Inventory;
+import com.elikill58.ipmanager.api.inventory.InventoryManager;
 import com.elikill58.ipmanager.api.item.ItemBuilder;
 import com.elikill58.ipmanager.api.item.ItemStack;
 import com.elikill58.ipmanager.api.item.Material;
@@ -59,12 +60,15 @@ public class IpPlayerInventory extends AbstractInventory<IpPlayerHolder> {
 					.lore(Messages.getStringList("inv.player.sub" + i + ".lore", infosPlaceholders)).build());
 		
 		inv.set(15, EMPTY);
+		inv.set(16, ItemBuilder.Builder(Materials.BOOK_AND_QUILL).displayName(getMessage("inv.player.connections")).build());
 		inv.set(inv.getSize() - 1, ItemBuilder.Builder(Materials.BARRIER).displayName(getMessage("inv.close")).build());
 		p.openInventory(inv);
 	}
 
 	@Override
 	public void manageInventory(InventoryClickEvent e, Material m, Player p, IpPlayerHolder nh) {
-		
+		if(m.equals(Materials.BOOK_AND_QUILL)) {
+			InventoryManager.open(NegativityInventory.CONNECTIONS_TIMES, p, nh.getCible());
+		}
 	}
 }

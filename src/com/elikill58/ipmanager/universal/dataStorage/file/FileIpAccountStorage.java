@@ -18,6 +18,7 @@ public class FileIpAccountStorage extends IpManagerAccountStorage {
 
 	public FileIpAccountStorage(File userDir) {
 		this.userDir = userDir;
+		userDir.mkdirs();
 	}
 
 	@Override

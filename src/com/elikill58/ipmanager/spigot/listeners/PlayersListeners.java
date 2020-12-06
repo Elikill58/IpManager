@@ -48,6 +48,7 @@ public class PlayersListeners implements Listener {
 		PlayerLeaveEvent event = new PlayerLeaveEvent(Players.getPlayer(p.getUniqueId(), () -> new SpigotPlayer(p)), np, e.getQuitMessage());
 		EventManager.callEvent(event);
 		e.setQuitMessage(event.getQuitMessage());
+		Players.remove(p.getUniqueId());
 	}
 	
 	@EventHandler

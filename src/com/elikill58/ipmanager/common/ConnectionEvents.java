@@ -32,6 +32,7 @@ public class ConnectionEvents implements Listeners {
 		IpPlayerAccount ip = IpPlayerAccountManager.getManager().getNow(e.getUUID());
 		ip.setBasicIp(basicIp);
 		ip.setProxy(bungeeIP);
+		ip.getAllConnections().add(System.currentTimeMillis());
 		ip.save();
 		
 		if(config.getBoolean("only_proxy.enabled")) {

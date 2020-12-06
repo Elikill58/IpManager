@@ -30,4 +30,8 @@ public class Players {
 	public static List<Player> getPlayersOnIP(String IP){
 		return Adapter.getAdapter().getOnlinePlayers().stream().filter((p) -> p.getIP().getHost().equalsIgnoreCase(IP)).collect(Collectors.toList());
 	}
+	
+	public static void remove(UUID uuid) {
+		PLAYERS.remove(uuid);
+	}
 }

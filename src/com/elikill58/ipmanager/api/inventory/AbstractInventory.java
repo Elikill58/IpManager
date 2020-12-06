@@ -80,6 +80,6 @@ public abstract class AbstractInventory<T extends NegativityHolder> {
 	public void actualizeInventory(Player p, Object... args) {}
 	
 	public static enum NegativityInventory {
-		IP_PLAYER;
+		IP_PLAYER, CONNECTIONS_TIMES;
 	}
 }

@@ -12,6 +12,7 @@ public class Materials {
     public static final Material BEACON = ItemRegistrar.getInstance().get("beacon");
     public static final Material BLAZE_POWDER = ItemRegistrar.getInstance().get("blaze_powder");
     public static final Material BLAZE_ROD = ItemRegistrar.getInstance().get("blaze_rod");
+    public static final Material BOOK = ItemRegistrar.getInstance().get("book", "empty_book");
     public static final Material BOOK_AND_QUILL = ItemRegistrar.getInstance().get("writable_book", "book_and_quill");
     public static final Material BONE = ItemRegistrar.getInstance().get("bone");
     public static final Material BOW = ItemRegistrar.getInstance().get("bow");
