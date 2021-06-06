@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.security.SecureRandom;
-import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -100,12 +99,12 @@ public class Utils {
 	public static String getContentFromUrl(String stringUrl) {
 		try {
 			URL url = new URL(stringUrl);
-			doTrustToCertificates();
+			//doTrustToCertificates();
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			/*
 			 * connection.setConnectTimeout(5); connection.setReadTimeout(5);
 			 */
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US) Gecko/20100316 Firefox/3.6.2");
 			connection.setUseCaches(true);
 			connection.setDoOutput(true);
 			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -121,7 +120,7 @@ public class Utils {
 	}
 	
 	public static void doTrustToCertificates() throws Exception {
-		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+		//Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
 			public X509Certificate[] getAcceptedIssuers() {
 				return null;
