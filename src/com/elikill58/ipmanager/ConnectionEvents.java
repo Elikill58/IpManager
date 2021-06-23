@@ -14,6 +14,9 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.elikill58.ipmanager.ban.Ban;
+import com.elikill58.ipmanager.ban.BanManager;
+import com.elikill58.ipmanager.handler.IP;
 import com.elikill58.ipmanager.handler.IpPlayer;
 import com.elikill58.ipmanager.listeners.WrongProxyEvent;
 
@@ -80,11 +83,52 @@ public class ConnectionEvents implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		IpPlayer ip = IpPlayer.getIpPlayer(p);
-		ip.loadIP();
-		ip.setFaiIP(p.getAddress().getHostName());
-		ip.save();
-		List<IpPlayer> playersOnIp = IpPlayer.getPlayersOnIP(ip.getBasicIP());
+		IpPlayer ipPlayer = IpPlayer.getIpPlayer(p);
+		ipPlayer.setFaiIP(p.getAddress().getHostName());
+		ipPlayer.save();
+
+		pl.getServer().getScheduler().runTaskAsynchronously(pl, () -> {
+			ConfigurationSection config = pl.getConfig();
+			if(config.getBoolean("check-wrong.enabled")) {
+				IP ip = IP.getIP(ipPlayer.getBasicIP());
+				ConfigurationSection cwSec = config.getConfigurationSection("check-wrong");
+				boolean kick = false, ban = false;
+				StringJoiner reason = new StringJoiner(", ");
+				
+				if(ip.isVPN()) {
+					ConfigurationSection vpnSec = cwSec.getConfigurationSection("vpn");
+					kick = vpnSec.getBoolean("kick", true);
+					ban = vpnSec.getBoolean("ban", true);
+					reason.add("VPN");
+				}
+				if(ip.isHosting()) {
+					ConfigurationSection hostSec = cwSec.getConfigurationSection("hosting");
+					kick = hostSec.getBoolean("kick", true) || kick;
+					ban = hostSec.getBoolean("ban", true) || ban;
+					reason.add("hosting");
+				}
+				if(ip.isProxy()) {
+					ConfigurationSection proxySec = cwSec.getConfigurationSection("proxy");
+					kick = proxySec.getBoolean("kick", true) || kick;
+					ban = proxySec.getBoolean("ban", true) || ban;
+					reason.add("proxy");
+				}
+				
+				if(kick || ban) {
+					boolean finalBan = ban;
+					pl.getServer().getScheduler().runTask(pl, () -> {
+						String msg = Messages.getMessage("messages.not_allowed", "%type%", reason.toString());
+						if(finalBan) {
+							BanManager.getInstance().getProcessor().run(Ban.create(p.getUniqueId(), msg, "Console"));
+						}
+						p.kickPlayer(msg);
+					});
+				} else
+					ipPlayer.setIp(ip);
+			}
+		});
+		
+		List<IpPlayer> playersOnIp = IpPlayer.getPlayersOnIP(ipPlayer.getBasicIP());
 		ConfigurationSection playerSection = getConfigForAmountPlayer(pl.getConfig().getConfigurationSection("ip-notify"), playersOnIp.size());
 		if(playerSection == null)
 			return;
@@ -111,6 +155,7 @@ public class ConnectionEvents implements Listener {
 				});
 			}
 		});
+		
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)

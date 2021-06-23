@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.elikill58.ipmanager.handler.IP;
 import com.elikill58.ipmanager.handler.IpPlayer;
 
 public class IpManager extends JavaPlugin {
@@ -37,7 +38,7 @@ public class IpManager extends JavaPlugin {
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
 			for(Player p : Utils.getOnlinePlayers()) {
 				IpPlayer ip = IpPlayer.getIpPlayer(p);
-				ip.loadIP();
+				ip.setIp(IP.getIP(ip.getBasicIP()));
 				ip.setFaiIP(p.getAddress().getHostName());
 				ip.save();
 			}

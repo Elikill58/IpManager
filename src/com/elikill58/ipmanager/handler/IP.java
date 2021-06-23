@@ -18,34 +18,40 @@ public class IP {
 	private String allIpJsonInfos;
 	private HashMap<IpInfos, String> ipInfos = new HashMap<>();
 	private boolean isVPN = false, isProxy = false, isHosting = false;
-
+	
 	public IP(String ip) {
 		this.ip = ip;
+		
+		if(Bukkit.isPrimaryThread()) {
+			IpManager pl = IpManager.getInstance();
+			pl.getLogger().severe("Cannot load IP " + ip + " sync ... Loading it async but few error can appear.");
+			Bukkit.getScheduler().runTaskAsynchronously(pl, this::loadContent);
+		} else
+			loadContent();
+	}
 
-		Bukkit.getScheduler().runTaskAsynchronously(IpManager.getInstance(), () -> {
-			try {
-				String checkingVpn = Utils.getContentFromUrl(Utils.getServerURL() + "ipmanager.php?ip=" + ip);
-				Object data = new JSONParser().parse(checkingVpn);
-				if (data instanceof JSONObject) {
-					JSONObject json = (JSONObject) data;
-					Object status = json.get("status");
-					if (status.toString().equalsIgnoreCase("ok")) {
-						JSONObject result = ((JSONObject) json.get("result"));
-						isVPN = result.get("vpn") == "true";
-						isProxy = result.get("proxy") == "true";
-						isHosting = result.get("hosting") == "true";
-					} else {
-						IpManager.getInstance().getLogger()
-								.severe("Error while loading VPN data for " + ip + ": " + status.toString());
-					}
-				} else
-					throw new NoSuchFieldException("Cannot found JSON vpn data for '" + allIpJsonInfos + "' string.");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		Bukkit.getScheduler().runTaskAsynchronously(IpManager.getInstance(),
-				() -> allIpJsonInfos = Utils.getContentFromUrl("https://ipapi.co/" + ip + "/json/"));
+	private void loadContent() {
+		try {
+			String checkingVpn = Utils.getContentFromUrl(Utils.getServerURL() + "ipmanager.php?ip=" + ip);
+			Object data = new JSONParser().parse(checkingVpn);
+			if (data instanceof JSONObject) {
+				JSONObject json = (JSONObject) data;
+				Object status = json.get("status");
+				if (status.toString().equalsIgnoreCase("ok")) {
+					JSONObject result = ((JSONObject) json.get("result"));
+					isVPN = result.get("vpn") == "true";
+					isProxy = result.get("proxy") == "true";
+					isHosting = result.get("hosting") == "true";
+				} else {
+					IpManager.getInstance().getLogger()
+							.severe("Error while loading VPN data for " + ip + ": " + status.toString());
+				}
+			} else
+				throw new NoSuchFieldException("Cannot found JSON vpn data for '" + allIpJsonInfos + "' string.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		allIpJsonInfos = Utils.getContentFromUrl("https://ipapi.co/" + ip + "/json/");
 		try {
 			Object data = new JSONParser().parse(allIpJsonInfos);
 			if (data instanceof JSONObject) {
@@ -59,7 +65,7 @@ public class IP {
 			ipInfos.put(IpInfos.UNSET, "Error while getting IP information : " + e.getMessage() + ".");
 		}
 	}
-
+	
 	public String getStringIP() {
 		return ip;
 	}

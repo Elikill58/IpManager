@@ -37,16 +37,11 @@ public class IpPlayer extends IpPlayerAbstract {
 	}
 	
 	public IP getIP() {
-		if(ip == null)
-			loadIP();
 		return ip;
 	}
 	
-	public void loadIP() {
-		if(ip != null) {
-			return;
-		}
-		this.ip = IP.getIP(basicIP);
+	public void setIp(IP ip) {
+		this.ip = ip;
 	}
 	
 	public String getBasicIP() {

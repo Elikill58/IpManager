@@ -32,6 +32,26 @@ banned-ip:
 ###########################################
 
 ###########################################
+#
+# Manage when player is using VPN, proxy or hosting
+# 
+#
+check-wrong:
+  enabled: true
+  vpn:
+    kick: true
+    ban: false
+  proxy:
+    kick: true
+    ban: false
+  hosting:
+    kick: true
+    ban: false
+
+#
+###########################################
+
+###########################################
 # Notify alert when multiple player connect on the same IP
 #
 # The action have to be :
@@ -58,6 +78,24 @@ ip-notify:
 #
 ###########################################
 
+
+###########################################
+#
+# Manage bans
+#
+ban:
+  # Currently, there is only one processor: 'command'
+  processor: "command"
+  #####
+  # Available placeholders:
+  # %uuid% : Player UUID
+  # %name% : Player name
+  # %reason% : Reason of ban
+  command: "ban %name% %reason%"
+#
+###########################################
+
+
 messages:
   log_console: "%name% (%uuid%) just connect with IP %ip%"
   wrong_proxy: "&cPlease connect via &eplay.myserver.net &c!"
@@ -65,6 +103,7 @@ messages:
   reloaded: "&aPlugin IpManager reloaded !"
   cannot_found: "&cCannot found player !"
   not_registered: "&cIP of &e%name% &cnot registered"
+  not_allowed: "&cYou are not allowed to use &l%type%&c."
   unknow: "Unknow"
   yes: "Yes"
   no: "No"
