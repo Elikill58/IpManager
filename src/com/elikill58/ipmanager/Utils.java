@@ -30,7 +30,7 @@ import com.google.common.io.ByteStreams;
 
 public class Utils {
 
-	private static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",")
+	public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",")
 			.split(",")[3];
 	
 	public static String getServerURL() {
@@ -40,7 +40,7 @@ public class Utils {
 	public static List<Player> getOnlinePlayers() {
 		List<Player> list = new ArrayList<>();
 		try {
-			Class<?> mcServer = Class.forName("net.minecraft.server." + VERSION + ".MinecraftServer");
+			Class<?> mcServer = PacketUtils.getNmsClass("MinecraftServer", "server.");
 			Object server = mcServer.getMethod("getServer").invoke(mcServer);
 			Object craftServer = server.getClass().getField("server").get(server);
 			Object getted = craftServer.getClass().getMethod("getOnlinePlayers").invoke(craftServer);
