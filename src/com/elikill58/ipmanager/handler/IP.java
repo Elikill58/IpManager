@@ -1,6 +1,7 @@
 package com.elikill58.ipmanager.handler;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
@@ -10,12 +11,11 @@ import com.elikill58.ipmanager.IpManager;
 import com.elikill58.ipmanager.Utils;
 import com.elikill58.ipmanager.exception.NotLoadedException;
 
-@SuppressWarnings("unchecked")
 public class IP {
 
 	private static final HashMap<String, IP> IPS = new HashMap<>();
 	private final String ip;
-	private String allIpJsonInfos;
+	private String allIpJsonInfos, asn = null, asnName = null;
 	private HashMap<IpInfos, String> ipInfos = new HashMap<>();
 	private boolean isVPN = false, isProxy = false, isHosting = false;
 	
@@ -25,30 +25,27 @@ public class IP {
 		if(Bukkit.isPrimaryThread()) {
 			IpManager pl = IpManager.getInstance();
 			pl.getLogger().severe("Cannot load IP " + ip + " sync ... Loading it async but few error can appear.");
-			Bukkit.getScheduler().runTaskAsynchronously(pl, this::loadContent);
+			CompletableFuture.runAsync(this::loadContent);
 		} else
 			loadContent();
 	}
 
 	private void loadContent() {
+		String checkingVpn = null;
 		try {
-			String checkingVpn = Utils.getContentFromUrl(Utils.getServerURL() + "ipmanager.php?ip=" + ip);
+			checkingVpn = Utils.getContentFromUrl("https://api.negativity.fr/ip/" + ip);
 			Object data = new JSONParser().parse(checkingVpn);
 			if (data instanceof JSONObject) {
-				JSONObject json = (JSONObject) data;
-				Object status = json.get("status");
-				if (status.toString().equalsIgnoreCase("ok")) {
-					JSONObject result = ((JSONObject) json.get("result"));
-					isVPN = result.get("vpn") == "true";
-					isProxy = result.get("proxy") == "true";
-					isHosting = result.get("hosting") == "true";
-				} else {
-					IpManager.getInstance().getLogger()
-							.severe("Error while loading VPN data for " + ip + ": " + status.toString());
-				}
+				JSONObject result = (JSONObject) data;
+				isVPN = result.get("vpn") == "true";
+				isProxy = result.get("proxy") == "true";
+				isHosting = result.get("hosting") == "true";
+				asn = result.get("code").toString();
+				asnName = result.get("name").toString();
 			} else
 				throw new NoSuchFieldException("Cannot found JSON vpn data for '" + allIpJsonInfos + "' string.");
 		} catch (Exception e) {
+			IpManager.getInstance().getLogger().severe("Failed to load content from API, result: " + checkingVpn);
 			e.printStackTrace();
 		}
 		allIpJsonInfos = Utils.getContentFromUrl("https://ipapi.co/" + ip + "/json/");
@@ -85,6 +82,14 @@ public class IP {
 	public boolean isHosting() {
 		return isHosting;
 	}
+	
+	public String getASN() {
+		return asn;
+	}
+	
+	public String getASNName() {
+		return asnName;
+	}
 
 	public String getIpInfos(IpInfos i) {
 		if (ipInfos.isEmpty()) {
@@ -102,6 +107,6 @@ public class IP {
 	}
 
 	public static enum IpInfos {
-		CITY, REGION, REGION_CODE, COUNTRY_CODE, COUNTRY_NAME, CONTINENT_CODE, IN_EU, TIMEZONE, LANGUAGUES, ASN, ORG, UNSET;
+		CITY, REGION, REGION_CODE, COUNTRY_CODE, COUNTRY_NAME, CONTINENT_CODE, IN_EU, TIMEZONE, LANGUAGUES, ORG, UNSET;
 	}
 }

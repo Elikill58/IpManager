@@ -115,6 +115,7 @@ public class Utils {
 			br.close();
 			return content;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "";
 		}
 	}
