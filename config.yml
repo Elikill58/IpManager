@@ -112,27 +112,27 @@ messages:
     #
     online: # If the player is online
     # All placeholders available :
+    # %ip% : The player IP
+    # %fai% : The FAI player IP
+    # %proxy_ip% : the proxied player IP
     # %city% : The city of the IP
     # %region% : The region of the IP (like 'California')
     # %region_code% : the region code of the IP (like 'CA')
     # %country_code% : The IP's country code (like 'US')
     # %country_name% : The IP's country name (like 'Washington')
     # %continent_code% : The continent code (like 'NA')
-    # %in_eu% : If the IP is in EU
     # %timezone% : Timezone of the country of the IP (like 'America/Los_Angeles')
     # %languagues% : Lang of the country (like 'en-US,es-US,haw,fr')
-    # %asn% : The number of the organization which is owner of the IP
+    # %asn% : Code about the owner of the IP.
+    # %asn_name% : Name of the owner of the IP
     # %org% : Organization owner of the IP
-    - "&7&m-------&e GetIP of &c%name% &7&m-------"
-    - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a)"
-    - "&aProxy: &e%proxy_ip%. &aFAI: &e%fai% &aOwned by &e%org%"
+    - "&7&m-------&e IP of &c%name% &7&m-------"
+    - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a), &aOwned by &e%org%"
+    - "&7From &6%asn_name% &7(%asn_name%) by &6%org%"
     - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7, &aHosting: &e%hosting%&7."
-    - "&7&m-------&e GetIP &7&m-------"
     offline: # If the player is offline
-    - "&7&m-------&e GetIP &7&m-------"
-    - "&aIP of &c%name% &a(&e%uuid%&a)"
-    - "&aIP: &e%ip%"
-    - "&aProxy: &e%proxy_ip%. &aFAI: &e%fai%"
+    - "&7&m-------&e IP of &c%name% &c(Offline) &7&m-------"
+    - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a), &aOwned by &e%org%"
+    - "&7From &6%asn_name% &7(%asn_name%) by &6%org%"
     - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7, &aHosting: &e%hosting%&7."
-    - "&7&m-------&e GetIP &7&m-------"
 

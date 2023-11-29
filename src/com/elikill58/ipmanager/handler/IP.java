@@ -54,12 +54,11 @@ public class IP {
 			if (data instanceof JSONObject) {
 				JSONObject json = (JSONObject) data;
 				for (IpInfos ii : IpInfos.values())
-					if (!ii.equals(IpInfos.UNSET))
-						ipInfos.put(ii, json.getOrDefault(ii.name().toLowerCase(), "unknow").toString());
+					ipInfos.put(ii, json.getOrDefault(ii.name().toLowerCase(), "unknow").toString());
 			} else
 				throw new NoSuchFieldException("Cannot found JSON data for '" + allIpJsonInfos + "' string.");
 		} catch (Exception e) {
-			ipInfos.put(IpInfos.UNSET, "Error while getting IP information : " + e.getMessage() + ".");
+			IpManager.getInstance().getLogger().severe("Error while getting IP information : " + e.getMessage());
 		}
 	}
 	
@@ -107,6 +106,6 @@ public class IP {
 	}
 
 	public static enum IpInfos {
-		CITY, REGION, REGION_CODE, COUNTRY_CODE, COUNTRY_NAME, CONTINENT_CODE, IN_EU, TIMEZONE, LANGUAGUES, ORG, UNSET;
+		CITY, REGION, REGION_CODE, COUNTRY_CODE, COUNTRY_NAME, CONTINENT_CODE, TIMEZONE, LANGUAGUES, ORG;
 	}
 }
