@@ -45,7 +45,7 @@ public class GetIpCommand implements CommandExecutor {
 				IP ip = pp.getIP();
 				for (String s : Messages.getStringList("messages.getip.online", "%name%", cible.getName(), "%uuid%", cible.getUniqueId().toString(), "%ip%", get(pp.getBasicIP()),
 						"%proxy_ip%", get(pp.getBungeeIP()), "%fai%", get(pp.getFaiIP()), "%asn_name%", ip.getASNName(), "%asn%", ip.getASN(), "%vpn%", Messages.getMessage(ip.isVPN()),
-						"%proxy%", Messages.getMessage(ip.isProxy()), "%hosting%", Messages.getMessage(ip.isHosting()))) {
+						"%proxy%", Messages.getMessage(ip.isProxy()))) {
 					if (s == null)
 						continue;
 					for (IpInfos ii : IpInfos.values())

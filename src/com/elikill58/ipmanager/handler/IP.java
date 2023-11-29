@@ -17,7 +17,7 @@ public class IP {
 	private final String ip;
 	private String allIpJsonInfos, asn = null, asnName = null;
 	private HashMap<IpInfos, String> ipInfos = new HashMap<>();
-	private boolean isVPN = false, isProxy = false, isHosting = false;
+	private boolean isVPN = false, isProxy = false;
 	
 	public IP(String ip) {
 		this.ip = ip;
@@ -39,7 +39,6 @@ public class IP {
 				JSONObject result = (JSONObject) data;
 				isVPN = result.get("vpn") == "true";
 				isProxy = result.get("proxy") == "true";
-				isHosting = result.get("hosting") == "true";
 				asn = result.get("code").toString();
 				asnName = result.get("name").toString();
 			} else
@@ -76,10 +75,6 @@ public class IP {
 
 	public boolean isProxy() {
 		return isProxy;
-	}
-
-	public boolean isHosting() {
-		return isHosting;
 	}
 	
 	public String getASN() {

@@ -102,8 +102,8 @@ messages:
   not_registered: "&cIP of &e%name% &cnot registered"
   not_allowed: "&cYou are not allowed to use &l%type%&c."
   unknow: "Unknow"
-  yes: "Yes"
-  no: "No"
+  yes: "✔"
+  no: "✖"
   getip:
     # What is the difference between 'ip', 'bungee_ip' and 'fai' ?
     # ip: the real user ip
@@ -129,10 +129,10 @@ messages:
     - "&7&m-------&e IP of &c%name% &7&m-------"
     - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a)"
     - "&7From &6%asn_name% &7(%asn%) by &6%org%"
-    - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7, &aHosting: &e%hosting%&7."
+    - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7."
     offline: # If the player is offline
     - "&7&m-------&e IP of &c%name% &c(Offline) &7&m-------"
     - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a), &aOwned by &e%org%"
     - "&7From &6%asn_name% &7(%asn_name%) by &6%org%"
-    - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7, &aHosting: &e%hosting%&7."
+    - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7."
 

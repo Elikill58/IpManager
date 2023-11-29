@@ -101,12 +101,6 @@ public class ConnectionEvents implements Listener {
 					ban = vpnSec.getBoolean("ban", true);
 					reason.add("VPN");
 				}
-				if(ip.isHosting()) {
-					ConfigurationSection hostSec = cwSec.getConfigurationSection("hosting");
-					kick = hostSec.getBoolean("kick", true) || kick;
-					ban = hostSec.getBoolean("ban", true) || ban;
-					reason.add("hosting");
-				}
 				if(ip.isProxy()) {
 					ConfigurationSection proxySec = cwSec.getConfigurationSection("proxy");
 					kick = proxySec.getBoolean("kick", true) || kick;
