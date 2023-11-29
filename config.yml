@@ -127,8 +127,8 @@ messages:
     # %asn_name% : Name of the owner of the IP
     # %org% : Organization owner of the IP
     - "&7&m-------&e IP of &c%name% &7&m-------"
-    - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a), &aOwned by &e%org%"
-    - "&7From &6%asn_name% &7(%asn_name%) by &6%org%"
+    - "&aIP: &e%ip% &ain &e%city% &a(&e%country_code%&a)"
+    - "&7From &6%asn_name% &7(%asn%) by &6%org%"
     - "&aVPN: &e%vpn%&7, &aProxy: &e%proxy%&7, &aHosting: &e%hosting%&7."
     offline: # If the player is offline
     - "&7&m-------&e IP of &c%name% &c(Offline) &7&m-------"
