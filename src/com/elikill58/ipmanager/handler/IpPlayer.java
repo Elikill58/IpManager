@@ -5,20 +5,19 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import com.elikill58.ipmanager.IpManager;
 
-public class IpPlayer extends IpPlayerAbstract {
+public class IpPlayer {
 
 	private static final HashMap<UUID, IpPlayer> IP_PLAYERS = new HashMap<>();
 	
-	private final Player p;
-	private IP ip = null;
+	private final OfflinePlayer p;
 	private String basicIP, bungeeIP, faiIP;
 	private final long connectionTime;
 	
-	public IpPlayer(Player p) {
+	public IpPlayer(OfflinePlayer p) {
 		this.p = p;
 		this.connectionTime = System.currentTimeMillis();
 		IpManager im = IpManager.getInstance();
@@ -28,7 +27,7 @@ public class IpPlayer extends IpPlayerAbstract {
 		this.faiIP = im.getIPConfig().getString(uuid + ".fai");
 	}
 	
-	public Player getPlayer() {
+	public OfflinePlayer getPlayer() {
 		return p;
 	}
 	
@@ -37,11 +36,7 @@ public class IpPlayer extends IpPlayerAbstract {
 	}
 	
 	public IP getIP() {
-		return ip;
-	}
-	
-	public void setIp(IP ip) {
-		this.ip = ip;
+		return IP.getIP(basicIP);
 	}
 	
 	public String getBasicIP() {
@@ -98,7 +93,7 @@ public class IpPlayer extends IpPlayerAbstract {
 		return IP_PLAYERS.values().stream().filter((ipp) -> ipp.isIP(ip)).collect(Collectors.toList());
 	}
 	
-	public static IpPlayer getIpPlayer(Player p) {
+	public static IpPlayer getIpPlayer(OfflinePlayer p) {
 		return IP_PLAYERS.computeIfAbsent(p.getUniqueId(), (uuid) -> new IpPlayer(p));
 	}
 }

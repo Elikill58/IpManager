@@ -1,17 +1,16 @@
 package com.elikill58.ipmanager;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.elikill58.ipmanager.handler.IP;
 import com.elikill58.ipmanager.handler.IP.IpInfos;
-import com.elikill58.ipmanager.handler.IpOfflinePlayer;
 import com.elikill58.ipmanager.handler.IpPlayer;
 
 @SuppressWarnings("deprecation")
@@ -23,7 +22,7 @@ public class GetIpCommand implements CommandExecutor {
 			Messages.sendMessage(sender, "messages.precise");
 			return true;
 		}
-		if(arg[0].equalsIgnoreCase("reload")) {
+		if (arg[0].equalsIgnoreCase("reload")) {
 			Messages.sendMessage(sender, "messages.reloaded");
 			IpManager.getInstance().reload();
 			return false;
@@ -40,28 +39,22 @@ public class GetIpCommand implements CommandExecutor {
 			return false;
 		}
 		if (IpManager.getInstance().getIPConfig().contains(of.getUniqueId().toString() + ".name")) {
-			if (of.isOnline()) {
-				IpPlayer pp = IpPlayer.getIpPlayer((Player) of);
+			OfflinePlayer cible = of;
+			CompletableFuture.runAsync(() -> {
+				IpPlayer pp = IpPlayer.getIpPlayer(cible);
 				IP ip = pp.getIP();
-				for (String s : Messages.getStringList("messages.getip.online", "%name%", of.getName(), "%uuid%",
-						of.getUniqueId().toString(), "%ip%", get(pp.getBasicIP()), "%proxy_ip%", get(pp.getBungeeIP()),
-						"%fai%", get(pp.getFaiIP()), "%asn_name%", ip.getASNName(), "%asn%", ip.getASN(), "%vpn%", Messages.getMessage(ip.isVPN()), "%proxy%",
-						Messages.getMessage(ip.isProxy()), "%hosting%", Messages.getMessage(ip.isHosting()))) {
+				for (String s : Messages.getStringList("messages.getip.online", "%name%", cible.getName(), "%uuid%", cible.getUniqueId().toString(), "%ip%", get(pp.getBasicIP()),
+						"%proxy_ip%", get(pp.getBungeeIP()), "%fai%", get(pp.getFaiIP()), "%asn_name%", ip.getASNName(), "%asn%", ip.getASN(), "%vpn%", Messages.getMessage(ip.isVPN()),
+						"%proxy%", Messages.getMessage(ip.isProxy()), "%hosting%", Messages.getMessage(ip.isHosting()))) {
 					if (s == null)
 						continue;
 					for (IpInfos ii : IpInfos.values())
 						s = s.replaceAll("%" + ii.name().toLowerCase() + "%", get(ip.getIpInfos(ii)));
 					sender.sendMessage(s);
 				}
-			} else {
-				IpOfflinePlayer pp = IpOfflinePlayer.getIpPlayer(of);
-				Messages.sendMessageList(sender, "messages.getip.offline", "%name%", of.getName(), "%uuid%",
-						of.getUniqueId().toString(), "%ip%", get(pp.getBasicIP()), "%proxy_ip%", get(pp.getBungeeIP()),
-						"%fai%", get(pp.getFaiIP()));
-			}
+			});
 		} else
-			Messages.sendMessage(sender, "messages.not_registered", "%name%", of.getName(), "%uuid%",
-					of.getUniqueId().toString());
+			Messages.sendMessage(sender, "messages.not_registered", "%name%", of.getName(), "%uuid%", of.getUniqueId().toString());
 
 		return false;
 	}

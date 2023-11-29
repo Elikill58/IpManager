@@ -123,8 +123,7 @@ public class ConnectionEvents implements Listener {
 						}
 						p.kickPlayer(msg);
 					});
-				} else
-					ipPlayer.setIp(ip);
+				}
 			}
 		});
 		

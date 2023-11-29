@@ -18,7 +18,7 @@ public class Messages {
 		List<String> l = new ArrayList<>();
 		for(String s : last) {
 			for (int index = 0; index <= placeholders.length - 1; index += 2)
-				s = s.replaceAll(placeholders[index], placeholders[index + 1]);
+				s = s.replaceAll(placeholders[index], placeholders[index + 1] == null ? "" : placeholders[index + 1]);
 			l.add(Utils.applyColorCodes(s));
 		}
 		return l;
