@@ -149,7 +149,7 @@ public class ConnectionEvents implements Listener {
 			} else if(action.startsWith("kick:")) {
 				p.kickPlayer(value);
 			} else if(action.startsWith("send:")) {
-				Utils.getOnlinePlayers().forEach((mod) -> {
+				Bukkit.getOnlinePlayers().forEach((mod) -> {
 					if((perm.isEmpty() && mod.isOp()) || mod.hasPermission(perm))
 						mod.sendMessage(value);
 				});

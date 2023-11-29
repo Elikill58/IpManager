@@ -2,6 +2,7 @@ package com.elikill58.ipmanager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,14 +30,13 @@ public class IpManager extends JavaPlugin {
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
 		saveDefaultConfig();
-		getConfig().addDefault("log_console", "true");
 
 		loadIpConfig();
 		
 		getCommand("getip").setExecutor(new GetIpCommand());
 		
-		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-			for(Player p : Utils.getOnlinePlayers()) {
+		CompletableFuture.runAsync(() -> {
+			for(Player p : Bukkit.getOnlinePlayers()) {
 				IpPlayer ip = IpPlayer.getIpPlayer(p);
 				ip.setIp(IP.getIP(ip.getBasicIP()));
 				ip.setFaiIP(p.getAddress().getHostName());
@@ -46,7 +46,7 @@ public class IpManager extends JavaPlugin {
 	}
 	
 	private void loadIpConfig() {
-		ipFile = new File(getDataFolder().getAbsolutePath() + File.separator + "users.yml");
+		ipFile = new File(getDataFolder().getAbsolutePath(), "users.yml");
 		if(!ipFile.exists())
 			Utils.copy(this, "users.yml", ipFile);
 		ipConfig = YamlConfiguration.loadConfiguration(ipFile);

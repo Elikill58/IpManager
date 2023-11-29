@@ -1,5 +1,5 @@
 # Log user IP on console when a player join
-log_console: true
+log_console: false
 
 ###########################################
 # Security system
@@ -42,9 +42,6 @@ check-wrong:
     kick: true
     ban: false
   proxy:
-    kick: true
-    ban: false
-  hosting:
     kick: true
     ban: false
 
